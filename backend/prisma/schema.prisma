@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+}
+
+enum ContentType {
+  TEXT
+  VIDEO
+  INTERACTIVE
+}
+
+enum AssessmentType {
+  QUIZ
+  TEST
+  PRACTICE
+}
+
+enum QuestionType {
+  MCQ
+  TRUE_FALSE
+  SHORT_ANSWER
+}
+
+enum EventType {
+  LESSON_START
+  LESSON_COMPLETE
+  TOPIC_VIEW
+  ASSESSMENT_START
+  ASSESSMENT_COMPLETE
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  student      Student?
+  teacher      Teacher?
+}
+
+model Student {
+  id            String          @id @default(cuid())
+  userId        String          @unique
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  grade         String
+  learningStyle String?
+  xpPoints      Int             @default(0)
+  streakDays    Int             @default(0)
+  enrollments   StudentCourse[]
+  attempts      Attempt[]
+  events        LearningEvent[]
+}
+
+model Teacher {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  department    String
+  qualification String
+  courses       Course[]
+}
+
+model Course {
+  id           String          @id @default(cuid())
+  title        String
+  description  String
+  thumbnailUrl String?
+  subjectArea  String
+  gradeLevel   String
+  teacherId    String
+  teacher      Teacher         @relation(fields: [teacherId], references: [id])
+  isPublished  Boolean         @default(false)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  modules      Module[]
+  assessments  Assessment[]
+  enrollments  StudentCourse[]
+}
+
+model Module {
+  id          String   @id @default(cuid())
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  orderIndex  Int
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id              String          @id @default(cuid())
+  moduleId        String
+  module          Module          @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title           String
+  content         String
+  contentType     ContentType     @default(TEXT)
+  durationMinutes Int             @default(0)
+  orderIndex      Int
+  isPublished     Boolean         @default(true)
+  topics          Topic[]
+  events          LearningEvent[]
+}
+
+model Topic {
+  id         String @id @default(cuid())
+  lessonId   String
+  lesson     Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  title      String
+  summary    String
+  keyPoints  Json
+  orderIndex Int
+}
+
+model Assessment {
+  id               String         @id @default(cuid())
+  courseId         String
+  course           Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessonId         String?
+  title            String
+  type             AssessmentType @default(QUIZ)
+  totalMarks       Int
+  passingMarks     Int
+  timeLimitMinutes Int            @default(30)
+  questions        Question[]
+  attempts         Attempt[]
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  assessmentId  String
+  assessment    Assessment   @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  questionText  String
+  questionType  QuestionType @default(MCQ)
+  options       Json
+  correctAnswer String
+  points        Int          @default(1)
+  orderIndex    Int
+}
+
+model Attempt {
+  id               String     @id @default(cuid())
+  studentId        String
+  student          Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  assessmentId     String
+  assessment       Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  answers          Json
+  score            Int
+  totalPossible    Int
+  passed           Boolean
+  startedAt        DateTime
+  completedAt      DateTime?
+  timeTakenSeconds Int?
+}
+
+model LearningEvent {
+  id        String    @id @default(cuid())
+  studentId String
+  student   Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  lessonId  String
+  lesson    Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  eventType EventType
+  metadata  Json?
+  createdAt DateTime  @default(now())
+}
+
+model StudentCourse {
+  id              String    @id @default(cuid())
+  studentId       String
+  student         Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  courseId        String
+  course          Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  enrolledAt      DateTime  @default(now())
+  completedAt     DateTime?
+  progressPercent Float     @default(0)
+
+  @@unique([studentId, courseId])
+}

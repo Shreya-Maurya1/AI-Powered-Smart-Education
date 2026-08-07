@@ -1,0 +1,53 @@
+# Node
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.vscode/settings.json
+.idea/
+*.iml
+
+# Prisma
+prisma/migrations/*.sql.bak
+
+# Docker
+*.dockerignore
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Python (ai-service)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+dist/
+.pytest_cache/
