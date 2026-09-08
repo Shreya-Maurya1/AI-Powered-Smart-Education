@@ -10,7 +10,11 @@ import type {
   CourseProgress,
   User,
   StudentCourse,
-  RegisterData
+  RegisterData,
+  MasterySummary,
+  TeacherAnalytics,
+  TopicDependency,
+  TeacherStudentSummary
 } from '@/types';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
@@ -70,13 +74,16 @@ export const assessmentsApi = {
   attempts: () => apiClient.get<ApiResponse<Attempt[]>>('/assessments/attempts').then(r => r.data.data),
 };
 
-// Progress
+// Progress & Mastery (Phase 2)
 export const progressApi = {
   student: (studentId: string) => apiClient.get<ApiResponse<Progress>>(`/progress/students/${studentId}`).then(r => r.data.data),
+  mastery: (studentId: string) => apiClient.get<ApiResponse<MasterySummary>>(`/progress/students/${studentId}/mastery`).then(r => r.data.data),
   course: (studentId: string, courseId: string) =>
     apiClient.get<ApiResponse<CourseProgress>>(`/progress/students/${studentId}/courses/${courseId}`).then(r => r.data.data),
-  logEvent: (data: { lessonId: string; eventType: string; metadata?: Record<string, unknown> }) =>
+  logEvent: (data: { lessonId?: string; topic?: string; eventType: string; metadata?: Record<string, unknown> }) =>
     apiClient.post<ApiResponse<unknown>>('/progress/events', data).then(r => r.data.data),
+  dependencies: () => apiClient.get<ApiResponse<TopicDependency[]>>('/progress/dependencies').then(r => r.data.data),
+  teacherAnalytics: () => apiClient.get<ApiResponse<TeacherAnalytics>>('/progress/teacher/analytics').then(r => r.data.data),
 };
 
 // Users
@@ -84,7 +91,7 @@ export const usersApi = {
   me: () => apiClient.get<ApiResponse<User>>('/users/me').then(r => r.data.data),
   updateProfile: (data: Partial<{ name: string; grade: string; learningStyle: string }>) =>
     apiClient.put<ApiResponse<User>>('/users/me', data).then(r => r.data.data),
-  students: () => apiClient.get<ApiResponse<User[]>>('/users/students').then(r => r.data.data),
+  students: () => apiClient.get<ApiResponse<TeacherStudentSummary[]>>('/users/students').then(r => r.data.data),
   getStudent: (id: string) => apiClient.get<ApiResponse<User>>(`/users/students/${id}`).then(r => r.data.data),
 };
 

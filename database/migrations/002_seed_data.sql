@@ -1,11 +1,11 @@
 -- ============================================================
 -- Migration 002: Seed Data
--- AdaptiveMind — Phase 1
--- Date: 2026-08-08
+-- AdaptiveMind — Phase 1 & 2
+-- Date: 2026-09-09
 -- ============================================================
--- Inserts demo teacher, demo student, 2 courses, modules,
--- lessons, topics, and a sample assessment so the app
--- works out-of-the-box without manual data entry.
+-- Inserts demo teacher, demo student, courses, modules,
+-- lessons, topics, assessments, questions with topic tags,
+-- student mastery data, topic dependencies, and learning events.
 -- ============================================================
 
 BEGIN;
@@ -52,8 +52,8 @@ INSERT INTO students (id, user_id, grade, learning_style, xp_points, streak_days
   'student-demo-001',
   '10',
   'visual',
-  250,
-  5
+  350,
+  7
 ) ON CONFLICT (id) DO NOTHING;
 
 -- ============================================================
@@ -109,18 +109,7 @@ INSERT INTO lessons (id, module_id, title, content, content_type, duration_minut
   'lesson-py-01-01',
   'module-py-01',
   'What is Python?',
-  '<h2>What is Python?</h2>
-<p>Python is a high-level, interpreted programming language known for its clear syntax and readability. Created by <strong>Guido van Rossum</strong> in 1991, Python has become one of the most popular programming languages worldwide.</p>
-<h3>Why Learn Python?</h3>
-<ul>
-  <li>Simple and readable syntax — great for beginners</li>
-  <li>Versatile: used in web development, data science, AI, automation</li>
-  <li>Huge community and extensive libraries</li>
-  <li>High demand in the job market</li>
-</ul>
-<h3>Your First Python Program</h3>
-<pre><code>print("Hello, World!")</code></pre>
-<p>Run this, and you will see <code>Hello, World!</code> printed on the screen. Congratulations — you are a programmer!</p>',
+  '<h2>What is Python?</h2><p>Python is a high-level, interpreted programming language known for clear syntax and readability.</p>',
   'TEXT',
   15,
   1
@@ -129,28 +118,7 @@ INSERT INTO lessons (id, module_id, title, content, content_type, duration_minut
   'lesson-py-01-02',
   'module-py-01',
   'Variables and Data Types',
-  '<h2>Variables and Data Types</h2>
-<p>Variables are containers for storing data values. In Python, you do not need to declare the type — Python figures it out automatically.</p>
-<h3>Basic Data Types</h3>
-<pre><code>
-name = "Alice"          # str (string)
-age = 17                # int (integer)
-gpa = 9.5               # float (decimal)
-is_student = True       # bool (boolean)
-</code></pre>
-<h3>Checking Data Types</h3>
-<pre><code>
-print(type(name))       # &lt;class str&gt;
-print(type(age))        # &lt;class int&gt;
-</code></pre>
-<h3>String Operations</h3>
-<pre><code>
-first_name = "Arjun"
-last_name = "Mehta"
-full_name = first_name + " " + last_name
-print(full_name)        # Arjun Mehta
-print(len(full_name))   # 11
-</code></pre>',
+  '<h2>Variables and Data Types</h2><p>Variables store data values in memory. Python infers types dynamically.</p>',
   'TEXT',
   20,
   2
@@ -159,20 +127,7 @@ print(len(full_name))   # 11
   'lesson-py-01-03',
   'module-py-01',
   'Input and Output',
-  '<h2>Input and Output in Python</h2>
-<p>Interacting with users is fundamental to any program. Python makes it simple with <code>print()</code> and <code>input()</code>.</p>
-<h3>The print() Function</h3>
-<pre><code>
-print("Hello!")                    # Basic output
-print("Name:", "Alice", "Age:", 17) # Multiple values
-print(f"My name is {name}")        # f-string (modern Python)
-</code></pre>
-<h3>The input() Function</h3>
-<pre><code>
-name = input("Enter your name: ")
-age = int(input("Enter your age: "))  # Convert to integer
-print(f"Hello {name}, you are {age} years old!")
-</code></pre>',
+  '<h2>Input and Output in Python</h2><p>Python makes input and output straightforward using print() and input().</p>',
   'TEXT',
   15,
   3
@@ -188,21 +143,7 @@ INSERT INTO lessons (id, module_id, title, content, content_type, duration_minut
   'lesson-py-02-01',
   'module-py-02',
   'Conditional Statements (if/elif/else)',
-  '<h2>Conditional Statements</h2>
-<p>Conditional statements let your program make decisions based on conditions.</p>
-<pre><code>
-score = 85
-
-if score >= 90:
-    print("Grade: A")
-elif score >= 80:
-    print("Grade: B")
-elif score >= 70:
-    print("Grade: C")
-else:
-    print("Grade: F")
-</code></pre>
-<p>Python uses <strong>indentation</strong> (spaces) to define code blocks — no curly braces needed!</p>',
+  '<h2>Conditional Statements</h2><p>Conditional statements control execution paths based on boolean evaluations.</p>',
   'TEXT',
   20,
   1
@@ -211,22 +152,7 @@ else:
   'lesson-py-02-02',
   'module-py-02',
   'For Loops',
-  '<h2>For Loops</h2>
-<p>For loops repeat a block of code a specific number of times, or for each item in a sequence.</p>
-<pre><code>
-# Loop over a range
-for i in range(5):
-    print(i)  # 0, 1, 2, 3, 4
-
-# Loop over a list
-fruits = ["apple", "banana", "mango"]
-for fruit in fruits:
-    print(f"I like {fruit}")
-
-# Loop with index
-for i, fruit in enumerate(fruits):
-    print(f"{i+1}. {fruit}")
-</code></pre>',
+  '<h2>For Loops</h2><p>Iterate over items of sequence like lists or string ranges.</p>',
   'TEXT',
   25,
   2
@@ -243,7 +169,7 @@ INSERT INTO topics (id, lesson_id, title, summary, key_points, order_index) VALU
   'lesson-py-01-01',
   'History of Python',
   'Python was created by Guido van Rossum and released in 1991.',
-  '["Created by Guido van Rossum in 1991", "Named after Monty Python comedy group", "Open source and community driven", "Python 3.x is the current major version"]',
+  '["Created by Guido van Rossum in 1991", "Named after Monty Python", "Open source and community driven"]',
   1
 ),
 (
@@ -251,7 +177,7 @@ INSERT INTO topics (id, lesson_id, title, summary, key_points, order_index) VALU
   'lesson-py-01-01',
   'Python Use Cases',
   'Python is used in web development, data science, AI, scripting, and more.',
-  '["Web: Django, Flask, FastAPI", "Data Science: NumPy, Pandas, Matplotlib", "AI/ML: TensorFlow, PyTorch, scikit-learn", "Scripting and automation", "Game development"]',
+  '["Web: Django, FastAPI", "Data Science: Pandas, NumPy", "AI: PyTorch, TensorFlow"]',
   2
 )
 ON CONFLICT (id) DO NOTHING;
@@ -273,10 +199,10 @@ INSERT INTO assessments (id, course_id, lesson_id, title, type, total_marks, pas
 ) ON CONFLICT (id) DO NOTHING;
 
 -- ============================================================
--- QUESTIONS
+-- QUESTIONS (With topic tags)
 -- ============================================================
 
-INSERT INTO questions (id, assessment_id, question_text, question_type, options, correct_answer, points, order_index) VALUES
+INSERT INTO questions (id, assessment_id, question_text, question_type, options, correct_answer, points, order_index, topic) VALUES
 (
   'q-py-01',
   'assessment-py-quiz-01',
@@ -285,7 +211,8 @@ INSERT INTO questions (id, assessment_id, question_text, question_type, options,
   '["var", "let", "No keyword needed", "define"]',
   'No keyword needed',
   2,
-  1
+  1,
+  'Python Variables'
 ),
 (
   'q-py-02',
@@ -295,7 +222,8 @@ INSERT INTO questions (id, assessment_id, question_text, question_type, options,
   '["<class int>", "<class float>", "<class str>", "<class double>"]',
   '<class float>',
   2,
-  2
+  2,
+  'Python Data Types'
 ),
 (
   'q-py-03',
@@ -305,7 +233,8 @@ INSERT INTO questions (id, assessment_id, question_text, question_type, options,
   '["True", "False"]',
   'True',
   2,
-  3
+  3,
+  'Control Flow'
 ),
 (
   'q-py-04',
@@ -315,7 +244,8 @@ INSERT INTO questions (id, assessment_id, question_text, question_type, options,
   '["read()", "scan()", "input()", "get()"]',
   'input()',
   2,
-  4
+  4,
+  'Input and Output'
 ),
 (
   'q-py-05',
@@ -325,26 +255,56 @@ INSERT INTO questions (id, assessment_id, question_text, question_type, options,
   '["4", "5", "6", "Error"]',
   '5',
   2,
-  5
+  5,
+  'Python Variables'
 ) ON CONFLICT (id) DO NOTHING;
+
+-- ============================================================
+-- STUDENT MASTERY (PHASE 2)
+-- ============================================================
+
+INSERT INTO student_mastery (id, student_id, topic, mastery_score, updated_at) VALUES
+('sm-01', 'student-profile-001', 'Python Variables',     0.95, NOW()),
+('sm-02', 'student-profile-001', 'Python Functions',     0.82, NOW()),
+('sm-03', 'student-profile-001', 'Control Flow',         0.75, NOW()),
+('sm-04', 'student-profile-001', 'SQL JOIN',             0.61, NOW()),
+('sm-05', 'student-profile-001', 'Calculus Derivatives', 0.50, NOW()),
+('sm-06', 'student-profile-001', 'Python Recursion',    0.43, NOW())
+ON CONFLICT (student_id, topic) DO UPDATE SET mastery_score = EXCLUDED.mastery_score;
+
+-- ============================================================
+-- TOPIC DEPENDENCIES (PHASE 2)
+-- ============================================================
+
+INSERT INTO topic_dependencies (id, topic, prerequisite_topic) VALUES
+('td-01', 'Control Flow',          'Python Variables'),
+('td-02', 'Python Functions',      'Control Flow'),
+('td-03', 'Python Recursion',      'Python Functions'),
+('td-04', 'Linear & Quadratic Eqs', 'Algebraic Expressions'),
+('td-05', 'Calculus Derivatives',  'Linear & Quadratic Eqs'),
+('td-06', 'SQL JOIN',              'SQL Basics'),
+('td-07', 'Advanced JOIN',         'SQL JOIN'),
+('td-08', 'Subqueries',            'Advanced JOIN')
+ON CONFLICT (topic, prerequisite_topic) DO NOTHING;
 
 -- ============================================================
 -- ENROLL DEMO STUDENT IN PYTHON COURSE
 -- ============================================================
 
 INSERT INTO student_courses (id, student_id, course_id, progress_percent) VALUES
-('enrollment-demo-001', 'student-profile-001', 'course-python-001', 20)
+('enrollment-demo-001', 'student-profile-001', 'course-python-001', 40)
 ON CONFLICT (student_id, course_id) DO NOTHING;
 
 -- ============================================================
 -- DEMO LEARNING EVENTS
 -- ============================================================
 
-INSERT INTO learning_events (id, student_id, lesson_id, event_type, metadata) VALUES
+INSERT INTO learning_events (id, student_id, lesson_id, topic, event_type, metadata) VALUES
 (
   'event-demo-001',
   'student-profile-001',
   'lesson-py-01-01',
+  'Python Variables',
   'LESSON_START',
   '{"device": "desktop", "browser": "chrome"}'
 ),
@@ -352,18 +312,26 @@ INSERT INTO learning_events (id, student_id, lesson_id, event_type, metadata) VA
   'event-demo-002',
   'student-profile-001',
   'lesson-py-01-01',
-  'LESSON_COMPLETE',
+  'Python Variables',
+  'LESSON_COMPLETED',
   '{"time_spent_seconds": 890}'
+),
+(
+  'event-demo-003',
+  'student-profile-001',
+  'lesson-py-01-02',
+  'Python Functions',
+  'QUIZ_ATTEMPTED',
+  '{"assessmentId": "assessment-py-quiz-01", "score": 8, "passed": true}'
+),
+(
+  'event-demo-004',
+  'student-profile-001',
+  NULL,
+  'Python Recursion',
+  'QUESTION_WRONG',
+  '{"questionId": "q-py-rec-01", "studentAnswer": "return fib(n)"}'
 )
 ON CONFLICT (id) DO NOTHING;
 
 COMMIT;
-
--- ============================================================
--- Demo Credentials:
--- Teacher: teacher@adaptivemind.dev / Teacher@123
--- Student: student@adaptivemind.dev / Student@123
--- Note: bcrypt hashes above need to be regenerated because
--- the hardcoded hashes are placeholders — use the /api/auth/register
--- endpoint to create real users in development.
--- ============================================================

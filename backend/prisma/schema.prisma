@@ -33,9 +33,15 @@ enum QuestionType {
 enum EventType {
   LESSON_START
   LESSON_COMPLETE
+  LESSON_COMPLETED
   TOPIC_VIEW
   ASSESSMENT_START
   ASSESSMENT_COMPLETE
+  QUIZ_ATTEMPTED
+  QUESTION_WRONG
+  QUESTION_CORRECT
+  TOPIC_REVISED
+  CODING_ATTEMPT
 }
 
 model User {
@@ -51,16 +57,17 @@ model User {
 }
 
 model Student {
-  id            String          @id @default(cuid())
-  userId        String          @unique
-  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String           @id @default(cuid())
+  userId        String           @unique
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   grade         String
   learningStyle String?
-  xpPoints      Int             @default(0)
-  streakDays    Int             @default(0)
+  xpPoints      Int              @default(0)
+  streakDays    Int              @default(0)
   enrollments   StudentCourse[]
   attempts      Attempt[]
   events        LearningEvent[]
+  masteries     StudentMastery[]
 }
 
 model Teacher {
@@ -147,6 +154,7 @@ model Question {
   correctAnswer String
   points        Int          @default(1)
   orderIndex    Int
+  topic         String?
 }
 
 model Attempt {
@@ -168,11 +176,32 @@ model LearningEvent {
   id        String    @id @default(cuid())
   studentId String
   student   Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  lessonId  String
-  lesson    Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lessonId  String?
+  lesson    Lesson?   @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  topic     String?
   eventType EventType
   metadata  Json?
   createdAt DateTime  @default(now())
+}
+
+model StudentMastery {
+  id           String   @id @default(cuid())
+  studentId    String
+  student      Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  topic        String
+  masteryScore Float    @default(0.0)
+  updatedAt    DateTime @default(now()) @updatedAt
+
+  @@unique([studentId, topic])
+}
+
+model TopicDependency {
+  id                String   @id @default(cuid())
+  topic             String
+  prerequisiteTopic String
+  createdAt         DateTime @default(now())
+
+  @@unique([topic, prerequisiteTopic])
 }
 
 model StudentCourse {
