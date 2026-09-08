@@ -1,6 +1,5 @@
 # AdaptiveMind — AI-Powered Adaptive Smart Education Platform
-
-> **Smart India Hackathon (SIH) — Problem Statement 19**  
+ 
 > *An intelligent, data-driven education platform that dynamically understands student progress, computes topic mastery, tracks learning events, and delivers personalized learning paths.*
 
 ---
