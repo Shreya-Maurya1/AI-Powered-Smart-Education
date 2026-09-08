@@ -1,0 +1,261 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+
+  @@map("user_role")
+}
+
+enum ContentType {
+  TEXT
+  VIDEO
+  INTERACTIVE
+
+  @@map("content_type")
+}
+
+enum AssessmentType {
+  QUIZ
+  TEST
+  PRACTICE
+
+  @@map("assessment_type")
+}
+
+enum QuestionType {
+  MCQ
+  TRUE_FALSE
+  SHORT_ANSWER
+
+  @@map("question_type")
+}
+
+enum EventType {
+  LESSON_START
+  LESSON_COMPLETE
+  LESSON_COMPLETED
+  TOPIC_VIEW
+  ASSESSMENT_START
+  ASSESSMENT_COMPLETE
+  QUIZ_ATTEMPTED
+  QUESTION_WRONG
+  QUESTION_CORRECT
+  TOPIC_REVISED
+  CODING_ATTEMPT
+
+  @@map("event_type")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  name         String
+  role         Role     @default(STUDENT)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  student      Student?
+  teacher      Teacher?
+
+  @@map("users")
+}
+
+model Student {
+  id            String           @id @default(cuid())
+  userId        String           @unique @map("user_id")
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  grade         String           @default("10")
+  learningStyle String?          @map("learning_style")
+  xpPoints      Int              @default(0) @map("xp_points")
+  streakDays    Int              @default(0) @map("streak_days")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  enrollments   StudentCourse[]
+  attempts      Attempt[]
+  events        LearningEvent[]
+  masteries     StudentMastery[]
+
+  @@map("students")
+}
+
+model Teacher {
+  id            String   @id @default(cuid())
+  userId        String   @unique @map("user_id")
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  department    String   @default("General")
+  qualification String   @default("B.Ed")
+  createdAt     DateTime @default(now()) @map("created_at")
+  courses       Course[]
+
+  @@map("teachers")
+}
+
+model Course {
+  id           String          @id @default(cuid())
+  title        String
+  description  String          @default("")
+  thumbnailUrl String?         @map("thumbnail_url")
+  subjectArea  String          @map("subject_area")
+  gradeLevel   String          @map("grade_level")
+  teacherId    String          @map("teacher_id")
+  teacher      Teacher         @relation(fields: [teacherId], references: [id])
+  isPublished  Boolean         @default(false) @map("is_published")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+  modules      Module[]
+  assessments  Assessment[]
+  enrollments  StudentCourse[]
+
+  @@map("courses")
+}
+
+model Module {
+  id          String   @id @default(cuid())
+  courseId    String   @map("course_id")
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  orderIndex  Int      @default(0) @map("order_index")
+  createdAt   DateTime @default(now()) @map("created_at")
+  lessons     Lesson[]
+
+  @@map("modules")
+}
+
+model Lesson {
+  id              String          @id @default(cuid())
+  moduleId        String          @map("module_id")
+  module          Module          @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  title           String
+  content         String          @default("")
+  contentType     ContentType     @default(TEXT) @map("content_type")
+  durationMinutes Int             @default(0) @map("duration_minutes")
+  orderIndex      Int             @default(0) @map("order_index")
+  isPublished     Boolean         @default(true) @map("is_published")
+  createdAt       DateTime        @default(now()) @map("created_at")
+  topics          Topic[]
+  events          LearningEvent[]
+
+  @@map("lessons")
+}
+
+model Topic {
+  id         String   @id @default(cuid())
+  lessonId   String   @map("lesson_id")
+  lesson     Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  title      String
+  summary    String   @default("")
+  keyPoints  Json     @default("[]") @map("key_points")
+  orderIndex Int      @default(0) @map("order_index")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("topics")
+}
+
+model Assessment {
+  id               String         @id @default(cuid())
+  courseId         String         @map("course_id")
+  course           Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessonId         String?        @map("lesson_id")
+  title            String
+  type             AssessmentType @default(QUIZ)
+  totalMarks       Int            @default(0) @map("total_marks")
+  passingMarks     Int            @default(0) @map("passing_marks")
+  timeLimitMinutes Int            @default(30) @map("time_limit_minutes")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  questions        Question[]
+  attempts         Attempt[]
+
+  @@map("assessments")
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  assessmentId  String       @map("assessment_id")
+  assessment    Assessment   @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  questionText  String       @map("question_text")
+  questionType  QuestionType @default(MCQ) @map("question_type")
+  options       Json         @default("[]")
+  correctAnswer String       @map("correct_answer")
+  points        Int          @default(1)
+  orderIndex    Int          @default(0) @map("order_index")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  topic         String?      @map("topic")
+
+  @@map("questions")
+}
+
+model Attempt {
+  id               String     @id @default(cuid())
+  studentId        String     @map("student_id")
+  student          Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  assessmentId     String     @map("assessment_id")
+  assessment       Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  answers          Json       @default("{}")
+  score            Int        @default(0)
+  totalPossible    Int        @default(0) @map("total_possible")
+  passed           Boolean    @default(false)
+  startedAt        DateTime   @default(now()) @map("started_at")
+  completedAt      DateTime?  @map("completed_at")
+  timeTakenSeconds Int?       @map("time_taken_seconds")
+
+  @@map("attempts")
+}
+
+model LearningEvent {
+  id           String     @id @default(cuid())
+  studentId    String     @map("student_id")
+  student      Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  lessonId     String?    @map("lesson_id")
+  lesson       Lesson?    @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  assessmentId String?    @map("assessment_id")
+  topic        String?    @map("topic")
+  eventType    EventType  @map("event_type")
+  metadata     Json?
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  @@map("learning_events")
+}
+
+model StudentMastery {
+  id           String   @id @default(cuid())
+  studentId    String   @map("student_id")
+  student      Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  topic        String
+  masteryScore Float    @default(0.0) @map("mastery_score")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@unique([studentId, topic])
+  @@map("student_mastery")
+}
+
+model TopicDependency {
+  id                String   @id @default(cuid())
+  topic             String   @map("topic_id")
+  prerequisiteTopic String   @map("prerequisite_topic_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@unique([topic, prerequisiteTopic])
+  @@map("topic_dependencies")
+}
+
+model StudentCourse {
+  id              String    @id @default(cuid())
+  studentId       String    @map("student_id")
+  student         Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  courseId        String    @map("course_id")
+  course          Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  enrolledAt      DateTime  @default(now()) @map("enrolled_at")
+  completedAt     DateTime? @map("completed_at")
+  progressPercent Float     @default(0) @map("progress_percent")
+
+  @@unique([studentId, courseId])
+  @@map("student_courses")
+}

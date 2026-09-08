@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: adaptivemind_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: adaptivemind
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: adaptivemind_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/migrations/001_initial_schema.sql:/docker-entrypoint-initdb.d/001_initial_schema.sql
+      - ./database/migrations/002_seed_data.sql:/docker-entrypoint-initdb.d/002_seed_data.sql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U adaptivemind -d adaptivemind_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: adaptivemind_backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://adaptivemind:password@postgres:5432/adaptivemind_db
+      JWT_SECRET: dev-jwt-secret-change-in-production
+      JWT_EXPIRES_IN: 7d
+      PORT: 5000
+      NODE_ENV: development
+      CORS_ORIGIN: http://localhost:3000
+    ports:
+      - '5000:5000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: adaptivemind_frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:5000
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
