@@ -9,6 +9,7 @@ export const env = {
   PORT: process.env.PORT ? parseInt(process.env.PORT, 10) : 5000,
   NODE_ENV: process.env.NODE_ENV || 'development',
   CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  AI_SERVICE_URL: process.env.AI_SERVICE_URL || 'http://localhost:8000',
 };
 
 const requiredVars = ['DATABASE_URL', 'JWT_SECRET', 'JWT_EXPIRES_IN'];

@@ -95,4 +95,48 @@ export const usersApi = {
   getStudent: (id: string) => apiClient.get<ApiResponse<User>>(`/users/students/${id}`).then(r => r.data.data),
 };
 
+// AI Service (Phase 3 & 4)
+export interface AdaptiveLearningResponse {
+  success: boolean;
+  agent_selected: string;
+  decision?: {
+    action: 'REVISE' | 'PRACTICE' | 'ASSESS' | 'EXPLAIN' | 'CODE' | 'ADVANCE';
+    topic: string;
+    difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+    reason: string;
+    confidence: number;
+  };
+  analysis?: {
+    current_mastery: number;
+    knowledge_gap: number;
+    confidence: number;
+    difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+    recent_mistakes: number;
+    prerequisite_satisfied: boolean;
+    recommended_strategy: string;
+  };
+  action_result?: Record<string, any>;
+  evaluation?: Record<string, any>;
+  output: string;
+  tool_calls_made: Array<Record<string, any>>;
+  metadata: Record<string, any>;
+}
+
+export const aiApi = {
+  learning: (data: {
+    studentId?: string;
+    topic?: string;
+    studentResponse?: string;
+    targetMastery?: number;
+    context?: Record<string, any>;
+  }) => apiClient.post<ApiResponse<AdaptiveLearningResponse>>('/ai/learning', data).then(r => r.data.data),
+  getLearningDecision: (data: {
+    studentId?: string;
+    topic?: string;
+    studentResponse?: string;
+    targetMastery?: number;
+    context?: Record<string, any>;
+  }) => apiClient.post<ApiResponse<AdaptiveLearningResponse>>('/ai/learning', data).then(r => r.data.data),
+};
+
 export default apiClient;
