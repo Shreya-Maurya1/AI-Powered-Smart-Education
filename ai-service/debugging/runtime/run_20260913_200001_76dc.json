@@ -1,0 +1,53 @@
+{
+  "run_id": "run_20260913_200001_76dc",
+  "agent": "tutor_agent",
+  "objective": "Provide Socratic pedagogical guidance for 'How does recursion work?' on topic 'Python Recursion'",
+  "student_id": "cmtt5drap00021dekmkdu4xt4",
+  "topic": "Python Recursion",
+  "started_at": "2026-09-13T20:00:01.348841+00:00",
+  "metadata": {
+    "question": "How does recursion work?"
+  },
+  "nodes_executed": [
+    {
+      "node": "tutor_graph",
+      "duration_ms": 10.06,
+      "status": "SUCCESS",
+      "details": "Completed RAG + Memory Socratic cycle",
+      "timestamp": "2026-09-13T20:00:01.358911+00:00"
+    }
+  ],
+  "tools_called": [
+    {
+      "tool": "rag_retriever",
+      "duration_ms": 18.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "query": "How does recursion work?",
+        "topic": "Python Recursion"
+      },
+      "output_summary": "Retrieved 3 curriculum chunks",
+      "timestamp": "2026-09-13T20:00:01.358917+00:00"
+    },
+    {
+      "tool": "memory_retriever",
+      "duration_ms": 10.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "topic": "Python Recursion"
+      },
+      "output_summary": "Found 2 active memories",
+      "timestamp": "2026-09-13T20:00:01.358921+00:00"
+    }
+  ],
+  "decisions": [],
+  "errors": [],
+  "final_result": {
+    "groundingScore": 0.94,
+    "citationsCount": 3
+  },
+  "status": "SUCCESS",
+  "finished_at": "2026-09-13T20:00:01.358923+00:00",
+  "total_duration_ms": 10.08
+}

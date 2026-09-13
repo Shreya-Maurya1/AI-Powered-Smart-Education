@@ -1,0 +1,41 @@
+{
+  "run_id": "run_20260913_200233_3ff1",
+  "agent": "coding_mentor",
+  "objective": "Mentor student on coding problem 'Infinite...' in Python Recursion",
+  "student_id": "s1",
+  "topic": "Python Recursion",
+  "started_at": "2026-09-13T20:02:33.230795+00:00",
+  "metadata": {
+    "has_code": true
+  },
+  "nodes_executed": [
+    {
+      "node": "coding_mentor_graph",
+      "duration_ms": 67.97,
+      "status": "SUCCESS",
+      "details": "Completed AST check, sandbox run & feedback",
+      "timestamp": "2026-09-13T20:02:33.298771+00:00"
+    }
+  ],
+  "tools_called": [
+    {
+      "tool": "ast_sandbox",
+      "duration_ms": 62.87,
+      "status": "RUNTIME_ERROR",
+      "input_summary": {
+        "safe": true
+      },
+      "output_summary": "Traceback (most recent call last):\n  File \"/var/folders/vx/4y43j0zs1bj5d9brhgg9c7th0000gn/T/tmpazizi",
+      "timestamp": "2026-09-13T20:02:33.298779+00:00"
+    }
+  ],
+  "decisions": [],
+  "errors": [],
+  "final_result": {
+    "executionSuccess": false,
+    "isSafe": true
+  },
+  "status": "SUCCESS",
+  "finished_at": "2026-09-13T20:02:33.298785+00:00",
+  "total_duration_ms": 67.99
+}

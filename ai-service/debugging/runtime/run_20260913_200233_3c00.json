@@ -1,0 +1,53 @@
+{
+  "run_id": "run_20260913_200233_3c00",
+  "agent": "tutor_agent",
+  "objective": "Provide Socratic pedagogical guidance for 'What is an INNER JOIN?' on topic 'SQL JOIN'",
+  "student_id": "cmtt5drap00021dekmkdu4xt4",
+  "topic": "SQL JOIN",
+  "started_at": "2026-09-13T20:02:33.430634+00:00",
+  "metadata": {
+    "question": "What is an INNER JOIN?"
+  },
+  "nodes_executed": [
+    {
+      "node": "tutor_graph",
+      "duration_ms": 7.21,
+      "status": "SUCCESS",
+      "details": "Completed RAG + Memory Socratic cycle",
+      "timestamp": "2026-09-13T20:02:33.437849+00:00"
+    }
+  ],
+  "tools_called": [
+    {
+      "tool": "rag_retriever",
+      "duration_ms": 18.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "query": "What is an INNER JOIN?",
+        "topic": "SQL JOIN"
+      },
+      "output_summary": "Retrieved 2 curriculum chunks",
+      "timestamp": "2026-09-13T20:02:33.437854+00:00"
+    },
+    {
+      "tool": "memory_retriever",
+      "duration_ms": 10.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "topic": "SQL JOIN"
+      },
+      "output_summary": "Found 3 active memories",
+      "timestamp": "2026-09-13T20:02:33.437856+00:00"
+    }
+  ],
+  "decisions": [],
+  "errors": [],
+  "final_result": {
+    "groundingScore": 0.94,
+    "citationsCount": 2
+  },
+  "status": "SUCCESS",
+  "finished_at": "2026-09-13T20:02:33.437860+00:00",
+  "total_duration_ms": 7.22
+}

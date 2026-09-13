@@ -1,0 +1,43 @@
+{
+  "run_id": "run_20260913_200001_336d",
+  "agent": "assessment_agent",
+  "objective": "Assess student mastery on 'Python Recursion' with rubric evaluation",
+  "student_id": "s1",
+  "topic": "Python Recursion",
+  "started_at": "2026-09-13T20:00:01.404580+00:00",
+  "metadata": {
+    "difficulty": "MEDIUM",
+    "has_response": true
+  },
+  "nodes_executed": [
+    {
+      "node": "assessment_graph",
+      "duration_ms": 13.33,
+      "status": "SUCCESS",
+      "details": "Completed evaluation & mastery update",
+      "timestamp": "2026-09-13T20:00:01.417914+00:00"
+    }
+  ],
+  "tools_called": [],
+  "decisions": [
+    {
+      "action": "PRACTICE",
+      "difficulty": "HARD",
+      "reason": "Assessment score: 96.5%",
+      "details": {
+        "score": 96.5,
+        "passed": true
+      },
+      "timestamp": "2026-09-13T20:00:01.417923+00:00"
+    }
+  ],
+  "errors": [],
+  "final_result": {
+    "score": 96.5,
+    "passed": true,
+    "questionsCount": 2
+  },
+  "status": "SUCCESS",
+  "finished_at": "2026-09-13T20:00:01.417926+00:00",
+  "total_duration_ms": 13.34
+}

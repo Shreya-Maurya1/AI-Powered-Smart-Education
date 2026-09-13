@@ -44,8 +44,38 @@ def run_learning_adaptation_agent(
         "logs": []
     }
 
-    # Execute graph
-    final_state = learning_adaptation_app.invoke(initial_state, config=config)
+    from app.debugging.tracer import tracer
+    import time
+
+    objective = f"Improve student mastery of '{effective_topic}' through continuous adaptation."
+    run_id = tracer.start_run(
+        agent="learning_adaptation_agent",
+        objective=objective,
+        student_id=student_id,
+        topic=effective_topic,
+        metadata={"target_mastery": target_mastery, "max_iterations": max_iterations}
+    )
+
+    t_start = time.monotonic()
+    try:
+        # Execute graph
+        final_state = learning_adaptation_app.invoke(initial_state, config=config)
+        graph_duration = round((time.monotonic() - t_start) * 1000, 2)
+        tracer.record_node(run_id, "learning_adaptation_graph", graph_duration, "SUCCESS", f"Completed {final_state.get('iteration_count', 1)} iterations")
+    except Exception as e:
+        tracer.record_error(run_id, str(e), "graph_execution", "Engaging graceful fallback response")
+        tracer.finish_run(run_id, status="DEGRADED_ERROR")
+        return AIResponse(
+            success=False,
+            agent_selected="learning_adaptation_agent",
+            decision=None,
+            analysis=None,
+            action_result={"error": str(e), "run_id": run_id},
+            evaluation=None,
+            output=f"Learning agent encountered a temporary service issue: {e}. Defaulting to guided review.",
+            tool_calls_made=[],
+            metadata={"run_id": run_id, "status": "DEGRADED"}
+        )
 
     raw_decision = final_state.get("decision")
     if isinstance(raw_decision, dict):
@@ -68,6 +98,27 @@ def run_learning_adaptation_agent(
     tool_calls = final_state.get("tool_calls_made", [])
     logs = final_state.get("logs", [])
     current_mastery = final_state.get("current_mastery", 0.50)
+
+    # Record tools and decisions into tracer
+    for tc in tool_calls:
+        tool_name = tc.get("tool", "unknown_tool")
+        tracer.record_tool(
+            run_id,
+            tool=tool_name,
+            duration_ms=tc.get("duration_ms", 12.0),
+            status=tc.get("status", "SUCCESS"),
+            input_summary={"student_id": student_id, "branch": tc.get("parallel_branch")},
+            output_summary=tc.get("output_summary")
+        )
+
+    if decision:
+        tracer.record_decision(
+            run_id,
+            action=decision.action,
+            difficulty=decision.difficulty,
+            reason=decision.reason,
+            details={"current_mastery": current_mastery, "target": target_mastery}
+        )
 
     # Compose output text
     action_name = decision.action if decision else "PRACTICE"
@@ -93,6 +144,9 @@ def run_learning_adaptation_agent(
             f"Current mastery: {current_mastery * 100:.0f}%. {decision.reason if decision else ''}"
         )
 
+    # Finish trace
+    tracer.finish_run(run_id, final_result={"action": action_name, "mastery": current_mastery, "output": output}, status="SUCCESS")
+
     return AIResponse(
         success=True,
         agent_selected="learning_adaptation_agent",
@@ -103,6 +157,7 @@ def run_learning_adaptation_agent(
         output=output,
         tool_calls_made=tool_calls,
         metadata={
+            "run_id": run_id,
             "phase": "Phase 4 Learning Adaptation Agent",
             "topic": effective_topic,
             "currentMastery": current_mastery,

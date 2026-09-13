@@ -1,0 +1,53 @@
+{
+  "run_id": "run_20260913_200233_211b",
+  "agent": "tutor_agent",
+  "objective": "Provide Socratic pedagogical guidance for 'Explain the call stack frames.' on topic 'Python Recursion'",
+  "student_id": "cmtt5drap00021dekmkdu4xt4",
+  "topic": "Python Recursion",
+  "started_at": "2026-09-13T20:02:33.422646+00:00",
+  "metadata": {
+    "question": "Explain the call stack frames."
+  },
+  "nodes_executed": [
+    {
+      "node": "tutor_graph",
+      "duration_ms": 7.52,
+      "status": "SUCCESS",
+      "details": "Completed RAG + Memory Socratic cycle",
+      "timestamp": "2026-09-13T20:02:33.430169+00:00"
+    }
+  ],
+  "tools_called": [
+    {
+      "tool": "rag_retriever",
+      "duration_ms": 18.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "query": "Explain the call stack frames.",
+        "topic": "Python Recursion"
+      },
+      "output_summary": "Retrieved 3 curriculum chunks",
+      "timestamp": "2026-09-13T20:02:33.430175+00:00"
+    },
+    {
+      "tool": "memory_retriever",
+      "duration_ms": 10.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "topic": "Python Recursion"
+      },
+      "output_summary": "Found 3 active memories",
+      "timestamp": "2026-09-13T20:02:33.430177+00:00"
+    }
+  ],
+  "decisions": [],
+  "errors": [],
+  "final_result": {
+    "groundingScore": 0.94,
+    "citationsCount": 3
+  },
+  "status": "SUCCESS",
+  "finished_at": "2026-09-13T20:02:33.430180+00:00",
+  "total_duration_ms": 7.53
+}

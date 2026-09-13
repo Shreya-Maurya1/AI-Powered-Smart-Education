@@ -1,0 +1,41 @@
+{
+  "run_id": "run_20260913_200001_c68b",
+  "agent": "coding_mentor",
+  "objective": "Mentor student on coding problem 'Factorial...' in Python Recursion",
+  "student_id": "s1",
+  "topic": "Python Recursion",
+  "started_at": "2026-09-13T20:00:01.418932+00:00",
+  "metadata": {
+    "has_code": true
+  },
+  "nodes_executed": [
+    {
+      "node": "coding_mentor_graph",
+      "duration_ms": 61.54,
+      "status": "SUCCESS",
+      "details": "Completed AST check, sandbox run & feedback",
+      "timestamp": "2026-09-13T20:00:01.480477+00:00"
+    }
+  ],
+  "tools_called": [
+    {
+      "tool": "ast_sandbox",
+      "duration_ms": 43.08,
+      "status": "SUCCESS",
+      "input_summary": {
+        "safe": true
+      },
+      "output_summary": "24\n",
+      "timestamp": "2026-09-13T20:00:01.480483+00:00"
+    }
+  ],
+  "decisions": [],
+  "errors": [],
+  "final_result": {
+    "executionSuccess": true,
+    "isSafe": true
+  },
+  "status": "SUCCESS",
+  "finished_at": "2026-09-13T20:00:01.480487+00:00",
+  "total_duration_ms": 61.55
+}

@@ -18,7 +18,8 @@ import {
   TrendingUp,
   AlertTriangle,
   Activity,
-  RotateCcw
+  RotateCcw,
+  Code2
 } from 'lucide-react';
 import { Spinner } from '@/components/ui/Spinner';
 
@@ -44,12 +45,54 @@ export default function StudentDashboard() {
               Welcome back, {user?.name}! 👋
             </h1>
             <p className="text-sm text-gray-500 mt-1">
-              Phase 2 Deterministic Mastery Engine • Real-time Progress Tracking
+              AdaptiveMind Multi-Agent Engine • Real-time Mastery & Tracing Active
             </p>
           </div>
-          <div className="flex items-center gap-2 bg-indigo-50 border border-indigo-100 px-4 py-2 rounded-xl text-indigo-700 font-semibold text-sm">
-            <Brain className="w-4 h-4 text-indigo-600" />
-            <span>Overall Mastery: {overallMastery}%</span>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/tutor"
+              className="flex items-center gap-1.5 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-3.5 py-2 rounded-xl text-indigo-700 font-semibold text-xs transition-colors"
+            >
+              <Brain className="w-4 h-4 text-indigo-600" />
+              <span>Ask AI Tutor</span>
+            </Link>
+            <Link
+              href="/coding"
+              className="flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-xl text-emerald-700 font-semibold text-xs transition-colors"
+            >
+              <Code2 className="w-4 h-4 text-emerald-600" />
+              <span>Code Lab</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Current Active Goal Banner */}
+        <div className="bg-gradient-to-r from-indigo-900 via-indigo-800 to-purple-900 text-white p-5 rounded-2xl shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] uppercase font-extrabold tracking-wider bg-indigo-500/30 text-indigo-200 px-2.5 py-0.5 rounded-full border border-indigo-400/30">
+                Active Learning Goal
+              </span>
+              <span className="text-xs text-indigo-300 font-medium">Phase 6 Adaptive Journey</span>
+            </div>
+            <h2 className="text-lg font-bold tracking-tight">Master SQL JOINs & Advanced Relational Queries</h2>
+            <p className="text-xs text-indigo-200">
+              Target: <span className="font-semibold text-white">≥ 85% Mastery</span> • Current Progress: <span className="font-semibold text-amber-300">65% (Intermediate)</span>
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/tutor?topic=SQL%20JOIN"
+              className="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold backdrop-blur-sm border border-white/20 transition-all flex items-center gap-1.5"
+            >
+              <Brain className="w-3.5 h-3.5" /> Tutor Help
+            </Link>
+            <Link
+              href="/learning"
+              className="px-4 py-2 bg-indigo-500 hover:bg-indigo-400 text-white rounded-xl text-xs font-bold shadow-sm transition-all flex items-center gap-1.5"
+            >
+              Resume Journey <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
 

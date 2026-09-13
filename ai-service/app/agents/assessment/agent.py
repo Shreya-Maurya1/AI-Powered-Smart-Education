@@ -38,7 +38,37 @@ def run_assessment_agent(
         "logs": [],
     }
 
-    final_state = assessment_app.invoke(initial_state, config=config)
+    from app.debugging.tracer import tracer
+    import time
+
+    objective = f"Assess student mastery on '{effective_topic}' with rubric evaluation"
+    run_id = tracer.start_run(
+        agent="assessment_agent",
+        objective=objective,
+        student_id=student_id,
+        topic=effective_topic,
+        metadata={"difficulty": difficulty, "has_response": bool(student_response)}
+    )
+
+    t0 = time.monotonic()
+    try:
+        final_state = assessment_app.invoke(initial_state, config=config)
+        graph_dur = round((time.monotonic() - t0) * 1000, 2)
+        tracer.record_node(run_id, "assessment_graph", graph_dur, "SUCCESS", "Completed evaluation & mastery update")
+    except Exception as e:
+        tracer.record_error(run_id, str(e), "assessment_graph", "Returning fallback assessment response")
+        tracer.finish_run(run_id, status="DEGRADED_ERROR")
+        return AIResponse(
+            success=False,
+            agent_selected="assessment_agent",
+            decision=None,
+            analysis=None,
+            action_result={"error": str(e), "run_id": run_id},
+            evaluation=None,
+            output=f"Assessment agent encountered an evaluation error: {e}",
+            tool_calls_made=[],
+            metadata={"run_id": run_id, "status": "DEGRADED"}
+        )
 
     questions = final_state.get("generated_questions", [])
     rubric = final_state.get("rubric_breakdown")
@@ -54,10 +84,19 @@ def run_assessment_agent(
             f"[Assessment Agent: {eval_type}] Overall Score: {score:.1f}% ({'PASSED' if passed else 'FAILED'}). "
             f"Next recommended action: {decision.action if decision else 'PRACTICE'} ({decision.difficulty if decision else 'MEDIUM'})."
         )
+        tracer.record_decision(
+            run_id,
+            action=decision.action if decision else "PRACTICE",
+            difficulty=decision.difficulty if decision else "MEDIUM",
+            reason=f"Assessment score: {score}%",
+            details={"score": score, "passed": passed}
+        )
     else:
         out_msg = (
             f"[Assessment Agent: Generated] Created {len(questions)} diagnostic questions for '{effective_topic}'."
         )
+
+    tracer.finish_run(run_id, final_result={"score": score, "passed": passed, "questionsCount": len(questions)}, status="SUCCESS")
 
     return AIResponse(
         success=True,
@@ -66,15 +105,16 @@ def run_assessment_agent(
         analysis=None,
         action_result={
             "questions": questions,
-            "rubricBreakdown": rubric,
             "overallScore": score,
             "passed": passed,
+            "rubricBreakdown": rubric,
             "masteryUpdate": mastery_update,
         },
         evaluation=final_state.get("evaluation_result"),
         output=out_msg,
         tool_calls_made=final_state.get("tool_calls_made", []),
         metadata={
+            "run_id": run_id,
             "phase": "Phase 5 Assessment Agent",
             "topic": effective_topic,
             "score": score,

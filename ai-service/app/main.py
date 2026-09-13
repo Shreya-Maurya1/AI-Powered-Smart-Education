@@ -144,6 +144,63 @@ def memory_inspect_endpoint(student_id: str, topic: Optional[str] = None):
     }
 
 
+# 8. GET /ai/debugging/runs (List recent execution traces)
+@app.get("/ai/debugging/runs")
+def list_debugging_runs(limit: int = 50):
+    from app.debugging.tracer import tracer
+    return {
+        "success": True,
+        "count": len(tracer.list_runs(limit=limit)),
+        "runs": tracer.list_runs(limit=limit),
+    }
+
+
+# 9. GET /ai/debugging/runs/{run_id} (Inspect single run JSON and text trace log)
+@app.get("/ai/debugging/runs/{run_id}")
+def get_debugging_run_detail(run_id: str):
+    from app.debugging.tracer import tracer
+    data = tracer.get_run_details(run_id)
+    if not data:
+        raise HTTPException(status_code=404, detail=f"Run '{run_id}' not found")
+    return {
+        "success": True,
+        "run": data,
+    }
+
+
+# 10. GET /ai/debugging/evaluation (Automated Evaluation Metrics Suite)
+@app.get("/ai/debugging/evaluation")
+def evaluation_metrics_endpoint():
+    from app.debugging.evaluation import run_full_system_evaluation
+    try:
+        results = run_full_system_evaluation()
+        return {
+            "success": True,
+            "evaluation": results,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# 11. GET /ai/debugging/benchmark (Sequential vs Parallel load_context Benchmark)
+@app.get("/ai/debugging/benchmark")
+def benchmark_endpoint(
+    student_id: str = "cmtt5drap00021dekmkdu4xt4",
+    topic: str = "Python Recursion",
+    trials: int = 3,
+):
+    from app.debugging.benchmark import run_benchmark
+    try:
+        results = run_benchmark(student_id=student_id, topic=topic, trials=trials)
+        return {
+            "success": True,
+            "benchmark": results,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
 if __name__ == "__main__":
     uvicorn.run(
         "app.main:app",

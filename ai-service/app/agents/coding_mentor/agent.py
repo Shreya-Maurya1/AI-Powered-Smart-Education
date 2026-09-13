@@ -35,7 +35,37 @@ def run_coding_mentor_agent(
         "logs": [],
     }
 
-    final_state = coding_mentor_app.invoke(initial_state, config=config)
+    from app.debugging.tracer import tracer
+    import time
+
+    objective = f"Mentor student on coding problem '{problem_description[:50]}...' in {effective_topic}"
+    run_id = tracer.start_run(
+        agent="coding_mentor",
+        objective=objective,
+        student_id=student_id,
+        topic=effective_topic,
+        metadata={"has_code": bool(student_code)}
+    )
+
+    t0 = time.monotonic()
+    try:
+        final_state = coding_mentor_app.invoke(initial_state, config=config)
+        graph_dur = round((time.monotonic() - t0) * 1000, 2)
+        tracer.record_node(run_id, "coding_mentor_graph", graph_dur, "SUCCESS", "Completed AST check, sandbox run & feedback")
+    except Exception as e:
+        tracer.record_error(run_id, str(e), "coding_mentor_graph", "Returning safe fallback feedback")
+        tracer.finish_run(run_id, status="DEGRADED_ERROR")
+        return AIResponse(
+            success=False,
+            agent_selected="coding_mentor",
+            decision=None,
+            analysis=None,
+            action_result={"error": str(e), "run_id": run_id},
+            evaluation=None,
+            output=f"Code execution sandbox encountered an error: {e}",
+            tool_calls_made=[],
+            metadata={"run_id": run_id, "status": "DEGRADED"}
+        )
 
     feedback = final_state.get("feedback") or ""
     hint = final_state.get("hint") or ""
@@ -45,8 +75,19 @@ def run_coding_mentor_agent(
     duration = final_state.get("execution_time_ms", 0.0)
     decision = final_state.get("decision")
     logs = final_state.get("logs", [])
+    is_safe = final_state.get("is_safe", True)
+
+    tracer.record_tool(
+        run_id,
+        tool="ast_sandbox",
+        duration_ms=duration,
+        status="SUCCESS" if success else ("REJECTED" if not is_safe else "RUNTIME_ERROR"),
+        input_summary={"safe": is_safe},
+        output_summary=stdout[:100] if stdout else stderr[:100]
+    )
 
     output = f"{feedback}\n\n{hint}" if hint else feedback
+    tracer.finish_run(run_id, final_result={"executionSuccess": success, "isSafe": is_safe}, status="SUCCESS")
 
     return AIResponse(
         success=True,
@@ -60,7 +101,7 @@ def run_coding_mentor_agent(
             "durationMs": duration,
             "feedback": feedback,
             "hint": hint,
-            "isSafe": final_state.get("is_safe", True),
+            "isSafe": is_safe,
         },
         evaluation={
             "status": "executed",
@@ -70,6 +111,7 @@ def run_coding_mentor_agent(
         output=output,
         tool_calls_made=final_state.get("tool_calls_made", []),
         metadata={
+            "run_id": run_id,
             "phase": "Phase 5 Coding Mentor",
             "topic": effective_topic,
             "executionSuccess": success,

@@ -7,14 +7,25 @@ from app.tools.backend_tools import (
     get_topic_prerequisites
 )
 
+import logging
+
+logger = logging.getLogger("adaptivemind.learning_adaptation.load_context")
+
 # Parallel Branch 1: Fetch student mastery
 def fetch_mastery_node(state: LearningAdaptationState) -> Dict[str, Any]:
     student_id = state.get("student_id", "")
-    tool_res = get_student_mastery.invoke({"student_id": student_id})
+    try:
+        tool_res = get_student_mastery.invoke({"student_id": student_id})
+        status = "SUCCESS"
+    except Exception as e:
+        logger.warning(f"Mastery tool unavailable for student {student_id}: {e}. Continuing with baseline mastery.")
+        tool_res = {"overallMastery": 0.50, "allMasteries": []}
+        status = "DEGRADED"
+
     return {
         "mastery_data": tool_res,
         "tool_calls_made": [
-            {"tool": "get_student_mastery", "student_id": student_id, "parallel_branch": 1}
+            {"tool": "get_student_mastery", "student_id": student_id, "parallel_branch": 1, "status": status}
         ]
     }
 
@@ -22,22 +33,36 @@ def fetch_mastery_node(state: LearningAdaptationState) -> Dict[str, Any]:
 def fetch_memory_node(state: LearningAdaptationState) -> Dict[str, Any]:
     student_id = state.get("student_id", "")
     topic = state.get("topic", "")
-    tool_res = retrieve_memory.invoke({"student_id": student_id, "query": topic})
+    try:
+        tool_res = retrieve_memory.invoke({"student_id": student_id, "query": topic})
+        status = "SUCCESS"
+    except Exception as e:
+        logger.warning(f"Memory unavailable for {student_id}: {e} -> continue using current state.")
+        tool_res = []
+        status = "DEGRADED_FALLBACK"
+
     return {
         "memory_data": tool_res,
         "tool_calls_made": [
-            {"tool": "retrieve_memory", "student_id": student_id, "parallel_branch": 2}
+            {"tool": "retrieve_memory", "student_id": student_id, "parallel_branch": 2, "status": status}
         ]
     }
 
 # Parallel Branch 3: Fetch learning history
 def fetch_history_node(state: LearningAdaptationState) -> Dict[str, Any]:
     student_id = state.get("student_id", "")
-    tool_res = get_learning_history.invoke({"student_id": student_id})
+    try:
+        tool_res = get_learning_history.invoke({"student_id": student_id})
+        status = "SUCCESS"
+    except Exception as e:
+        logger.warning(f"Learning history unavailable for {student_id}: {e}. Continuing without past logs.")
+        tool_res = []
+        status = "DEGRADED_FALLBACK"
+
     return {
         "history_data": tool_res,
         "tool_calls_made": [
-            {"tool": "get_learning_history", "student_id": student_id, "parallel_branch": 3}
+            {"tool": "get_learning_history", "student_id": student_id, "parallel_branch": 3, "status": status}
         ]
     }
 

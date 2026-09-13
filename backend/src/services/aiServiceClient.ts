@@ -183,6 +183,42 @@ class AIServiceClient {
       }),
     });
   }
+
+  /**
+   * Fetch recent execution runs and audit traces
+   */
+  async getDebuggingRuns(limit: number = 50): Promise<any> {
+    return this.request<any>(`/ai/debugging/runs?limit=${limit}`, {
+      method: 'GET',
+    });
+  }
+
+  /**
+   * Fetch details and plain text trace log for a single run
+   */
+  async getDebuggingRunDetail(runId: string): Promise<any> {
+    return this.request<any>(`/ai/debugging/runs/${runId}`, {
+      method: 'GET',
+    });
+  }
+
+  /**
+   * Execute evaluation benchmark suite and return metrics report
+   */
+  async getEvaluationMetrics(): Promise<any> {
+    return this.request<any>('/ai/debugging/evaluation', {
+      method: 'GET',
+    });
+  }
+
+  /**
+   * Execute sequential vs parallel benchmark
+   */
+  async getBenchmarkResults(): Promise<any> {
+    return this.request<any>('/ai/debugging/benchmark', {
+      method: 'GET',
+    });
+  }
 }
 
 export const aiServiceClient = new AIServiceClient();
