@@ -277,7 +277,7 @@ ON CONFLICT (student_id, topic) DO UPDATE SET mastery_score = EXCLUDED.mastery_s
 -- TOPIC DEPENDENCIES (PHASE 2)
 -- ============================================================
 
-INSERT INTO topic_dependencies (id, topic_id, prerequisite_topic_id) VALUES
+INSERT INTO topic_dependencies (id, topic, prerequisite_topic) VALUES
 ('td-01', 'Control Flow',          'Python Variables'),
 ('td-02', 'Python Functions',      'Control Flow'),
 ('td-03', 'Python Recursion',      'Python Functions'),
@@ -286,7 +286,7 @@ INSERT INTO topic_dependencies (id, topic_id, prerequisite_topic_id) VALUES
 ('td-06', 'SQL JOIN',              'SQL Basics'),
 ('td-07', 'Advanced JOIN',         'SQL JOIN'),
 ('td-08', 'Subqueries',            'Advanced JOIN')
-ON CONFLICT (topic_id, prerequisite_topic_id) DO NOTHING;
+ON CONFLICT (topic, prerequisite_topic) DO NOTHING;
 
 -- ============================================================
 -- ENROLL DEMO STUDENT IN PYTHON COURSE
