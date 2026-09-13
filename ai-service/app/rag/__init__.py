@@ -1,3 +1,7 @@
-from app.rag.retriever import CurriculumRetriever, retriever
+from app.rag.retriever import PGVectorRetriever, rag_retriever
 
-__all__ = ["CurriculumRetriever", "retriever"]
+# Backwards compatibility aliases
+CurriculumRetriever = PGVectorRetriever
+retriever = rag_retriever
+
+__all__ = ["PGVectorRetriever", "rag_retriever", "CurriculumRetriever", "retriever"]

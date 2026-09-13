@@ -152,29 +152,28 @@ def evaluate_answer(question_id: str, student_answer: str, expected_answer: Opti
         "score": 1.0 if is_correct else 0.0
     }
 
-# 7. retrieve_memory (Stub for Phase 5)
+# 7. retrieve_memory (Real Implementation using StudentMemorySystem)
 @tool
 def retrieve_memory(student_id: str, query: str = "") -> List[Dict[str, Any]]:
-    """Retrieve episodic and semantic memory traces for a student (Phase 5 placeholder)."""
-    return [
-        {
-            "memoryId": "mem-001",
-            "studentId": student_id,
-            "type": "learning_preference",
-            "content": "Student responds best to step-by-step visual code tracing and recursion tree diagrams."
-        }
-    ]
+    """Retrieve episodic and semantic memory traces for a student from the memory system."""
+    from app.memory import memory_system
+    return memory_system.retrieve_memory(student_id=student_id, query=query)
 
-# 8. save_memory (Stub for Phase 5)
+# 8. save_memory (Real Implementation using StudentMemorySystem)
 @tool
 def save_memory(student_id: str, memory_item: Dict[str, Any]) -> Dict[str, Any]:
-    """Store an episodic memory trace for a student (Phase 5 placeholder)."""
-    return {
-        "status": "saved",
-        "studentId": student_id,
-        "item": memory_item,
-        "note": "Phase 5 Memory Engine stub"
-    }
+    """Store an episodic or semantic memory trace for a student."""
+    from app.memory import memory_system
+    category = memory_item.get("category", "EPISODIC")
+    content = memory_item.get("content", "")
+    topic = memory_item.get("topic", "General")
+    importance = memory_item.get("importance_score", 0.7)
+    meta = memory_item.get("metadata", {})
+    if category.upper() == "SEMANTIC":
+        record = memory_system.record_semantic_memory(student_id, content, topic, importance, meta)
+    else:
+        record = memory_system.record_episodic_memory(student_id, content, topic, importance, meta)
+    return {"status": "saved", "record": record}
 
 # --- Phase 4 New Adaptive Action Tools ---
 

@@ -128,7 +128,8 @@ class AIServiceClient {
     courseId: string = 'course-python-001',
     topic?: string,
     numQuestions: number = 3,
-    difficulty: 'EASY' | 'MEDIUM' | 'HARD' = 'MEDIUM'
+    difficulty: 'EASY' | 'MEDIUM' | 'HARD' = 'MEDIUM',
+    context: Record<string, any> = {}
   ): Promise<AIResponse> {
     return this.request<AIResponse>('/ai/assessment', {
       method: 'POST',
@@ -138,6 +139,7 @@ class AIServiceClient {
         topic,
         num_questions: numQuestions,
         difficulty,
+        context,
       }),
     });
   }

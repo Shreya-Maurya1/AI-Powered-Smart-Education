@@ -137,6 +137,26 @@ export const aiApi = {
     targetMastery?: number;
     context?: Record<string, any>;
   }) => apiClient.post<ApiResponse<AdaptiveLearningResponse>>('/ai/learning', data).then(r => r.data.data),
+  tutor: (data: {
+    question: string;
+    topic?: string;
+    studentId?: string;
+    context?: Record<string, any>;
+  }) => apiClient.post<ApiResponse<AdaptiveLearningResponse>>('/ai/tutor', data).then(r => r.data.data),
+  assessment: (data: {
+    topic?: string;
+    studentResponse?: string;
+    numQuestions?: number;
+    difficulty?: string;
+    courseId?: string;
+    studentId?: string;
+  }) => apiClient.post<ApiResponse<AdaptiveLearningResponse>>('/ai/assessment', data).then(r => r.data.data),
+  coding: (data: {
+    studentCode?: string;
+    problemDescription?: string;
+    topic?: string;
+    studentId?: string;
+  }) => apiClient.post<ApiResponse<AdaptiveLearningResponse>>('/ai/coding', data).then(r => r.data.data),
 };
 
 export default apiClient;
