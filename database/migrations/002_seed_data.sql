@@ -19,7 +19,7 @@ INSERT INTO users (id, email, password_hash, name, role) VALUES
 (
   'teacher-demo-001',
   'teacher@adaptivemind.dev',
-  '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBpj2YmEyKlVnK',
+  '$2a$12$xMYrdzYJcNWKgQl.oiu3QO6XMKAX7hNfS1ze4jAlkiVHamftxPLNS',
   'Dr. Priya Sharma',
   'TEACHER'
 ) ON CONFLICT (id) DO NOTHING;
@@ -41,10 +41,11 @@ INSERT INTO users (id, email, password_hash, name, role) VALUES
 (
   'student-demo-001',
   'student@adaptivemind.dev',
-  '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/6.0FDiRqDvJVL0HYe',
+  '$2a$12$EQ4dje5AiQzQLINtaFvWJO/iqljvr61ROGskV2fC9zwOtpBH0.P1q',
   'Arjun Mehta',
   'STUDENT'
 ) ON CONFLICT (id) DO NOTHING;
+
 
 INSERT INTO students (id, user_id, grade, learning_style, xp_points, streak_days) VALUES
 (
