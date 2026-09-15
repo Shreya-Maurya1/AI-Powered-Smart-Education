@@ -59,6 +59,8 @@ class AssessmentRequest(BaseModel):
     topic: Optional[str] = None
     num_questions: int = 3
     difficulty: Optional[Literal["EASY", "MEDIUM", "HARD"]] = "MEDIUM"
+    student_response: Optional[str] = None
+    context: Optional[Dict[str, Any]] = Field(default_factory=dict)
 
 
 class CodingRequest(BaseModel):
