@@ -1,0 +1,41 @@
+{
+  "run_id": "run_20260913_200233_df51",
+  "agent": "coding_mentor",
+  "objective": "Mentor student on coding problem 'Restricted...' in Python Basics",
+  "student_id": "s1",
+  "topic": "Python Basics",
+  "started_at": "2026-09-13T20:02:33.300187+00:00",
+  "metadata": {
+    "has_code": true
+  },
+  "nodes_executed": [
+    {
+      "node": "coding_mentor_graph",
+      "duration_ms": 3.54,
+      "status": "SUCCESS",
+      "details": "Completed AST check, sandbox run & feedback",
+      "timestamp": "2026-09-13T20:02:33.303738+00:00"
+    }
+  ],
+  "tools_called": [
+    {
+      "tool": "ast_sandbox",
+      "duration_ms": 0.0,
+      "status": "REJECTED",
+      "input_summary": {
+        "safe": false
+      },
+      "output_summary": "Security Sandbox Warning: Importing system module 'os' is restricted in the sandbox.",
+      "timestamp": "2026-09-13T20:02:33.303742+00:00"
+    }
+  ],
+  "decisions": [],
+  "errors": [],
+  "final_result": {
+    "executionSuccess": false,
+    "isSafe": false
+  },
+  "status": "SUCCESS",
+  "finished_at": "2026-09-13T20:02:33.303745+00:00",
+  "total_duration_ms": 3.56
+}

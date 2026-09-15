@@ -1,0 +1,43 @@
+{
+  "run_id": "run_20260913_200233_19e9",
+  "agent": "assessment_agent",
+  "objective": "Assess student mastery on 'SQL JOIN' with rubric evaluation",
+  "student_id": "cmtt5drap00021dekmkdu4xt4",
+  "topic": "SQL JOIN",
+  "started_at": "2026-09-13T20:02:33.346018+00:00",
+  "metadata": {
+    "difficulty": "MEDIUM",
+    "has_response": true
+  },
+  "nodes_executed": [
+    {
+      "node": "assessment_graph",
+      "duration_ms": 13.24,
+      "status": "SUCCESS",
+      "details": "Completed evaluation & mastery update",
+      "timestamp": "2026-09-13T20:02:33.359264+00:00"
+    }
+  ],
+  "tools_called": [],
+  "decisions": [
+    {
+      "action": "REVISE",
+      "difficulty": "EASY",
+      "reason": "Assessment score: 51.5%",
+      "details": {
+        "score": 51.5,
+        "passed": false
+      },
+      "timestamp": "2026-09-13T20:02:33.359272+00:00"
+    }
+  ],
+  "errors": [],
+  "final_result": {
+    "score": 51.5,
+    "passed": false,
+    "questionsCount": 2
+  },
+  "status": "SUCCESS",
+  "finished_at": "2026-09-13T20:02:33.359275+00:00",
+  "total_duration_ms": 13.25
+}

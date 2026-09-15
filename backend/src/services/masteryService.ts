@@ -331,3 +331,28 @@ export async function getTopicDependencies() {
     orderBy: { topic: 'asc' },
   });
 }
+
+/**
+ * Directly update or set a student's topic mastery score (used by AI Learning Adaptation Agent).
+ */
+export async function updateStudentTopicMastery(
+  studentId: string,
+  topic: string,
+  newMastery: number
+): Promise<{ topic: string; previousMastery: number; newMastery: number; change: number }> {
+  const existing = await prisma.studentMastery.findUnique({
+    where: { studentId_topic: { studentId, topic } },
+  });
+
+  const previousMastery = existing ? existing.masteryScore : 0.50;
+  const clampedMastery = Math.max(0.0, Math.min(1.0, Math.round(newMastery * 100) / 100));
+  const change = Math.round((clampedMastery - previousMastery) * 100) / 100;
+
+  await prisma.studentMastery.upsert({
+    where: { studentId_topic: { studentId, topic } },
+    update: { masteryScore: clampedMastery, updatedAt: new Date() },
+    create: { studentId, topic, masteryScore: clampedMastery },
+  });
+
+  return { topic, previousMastery, newMastery: clampedMastery, change };
+}

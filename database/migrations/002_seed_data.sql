@@ -19,7 +19,7 @@ INSERT INTO users (id, email, password_hash, name, role) VALUES
 (
   'teacher-demo-001',
   'teacher@adaptivemind.dev',
-  '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBpj2YmEyKlVnK',
+  '$2a$12$xMYrdzYJcNWKgQl.oiu3QO6XMKAX7hNfS1ze4jAlkiVHamftxPLNS',
   'Dr. Priya Sharma',
   'TEACHER'
 ) ON CONFLICT (id) DO NOTHING;
@@ -41,10 +41,11 @@ INSERT INTO users (id, email, password_hash, name, role) VALUES
 (
   'student-demo-001',
   'student@adaptivemind.dev',
-  '$2b$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/6.0FDiRqDvJVL0HYe',
+  '$2a$12$EQ4dje5AiQzQLINtaFvWJO/iqljvr61ROGskV2fC9zwOtpBH0.P1q',
   'Arjun Mehta',
   'STUDENT'
 ) ON CONFLICT (id) DO NOTHING;
+
 
 INSERT INTO students (id, user_id, grade, learning_style, xp_points, streak_days) VALUES
 (
@@ -276,7 +277,7 @@ ON CONFLICT (student_id, topic) DO UPDATE SET mastery_score = EXCLUDED.mastery_s
 -- TOPIC DEPENDENCIES (PHASE 2)
 -- ============================================================
 
-INSERT INTO topic_dependencies (id, topic_id, prerequisite_topic_id) VALUES
+INSERT INTO topic_dependencies (id, topic, prerequisite_topic) VALUES
 ('td-01', 'Control Flow',          'Python Variables'),
 ('td-02', 'Python Functions',      'Control Flow'),
 ('td-03', 'Python Recursion',      'Python Functions'),
@@ -285,7 +286,7 @@ INSERT INTO topic_dependencies (id, topic_id, prerequisite_topic_id) VALUES
 ('td-06', 'SQL JOIN',              'SQL Basics'),
 ('td-07', 'Advanced JOIN',         'SQL JOIN'),
 ('td-08', 'Subqueries',            'Advanced JOIN')
-ON CONFLICT (topic_id, prerequisite_topic_id) DO NOTHING;
+ON CONFLICT (topic, prerequisite_topic) DO NOTHING;
 
 -- ============================================================
 -- ENROLL DEMO STUDENT IN PYTHON COURSE

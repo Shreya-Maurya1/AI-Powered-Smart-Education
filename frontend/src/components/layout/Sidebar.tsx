@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-import { LayoutDashboard, BookOpen, User, GraduationCap, BarChart2 } from 'lucide-react';
+import { LayoutDashboard, BookOpen, User, GraduationCap, BarChart2, Sparkles, MessageSquare, Code } from 'lucide-react';
 
 export function Sidebar() {
   const { user } = useAuth();
@@ -16,6 +16,9 @@ export function Sidebar() {
 
   const studentLinks = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Adaptive Learning', href: '/learning', icon: Sparkles },
+    { name: 'AI Socratic Tutor', href: '/tutor', icon: MessageSquare },
+    { name: 'Coding Mentor', href: '/coding', icon: Code },
     { name: 'Browse Courses', href: '/courses', icon: BookOpen },
     { name: 'My Profile', href: '/profile', icon: User },
   ];

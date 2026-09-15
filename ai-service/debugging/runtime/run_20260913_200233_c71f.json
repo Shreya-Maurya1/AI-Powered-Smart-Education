@@ -1,0 +1,41 @@
+{
+  "run_id": "run_20260913_200233_c71f",
+  "agent": "coding_mentor",
+  "objective": "Mentor student on coding problem 'Compute factorial of n using recursion....' in Python Recursion",
+  "student_id": "cmtt5drap00021dekmkdu4xt4",
+  "topic": "Python Recursion",
+  "started_at": "2026-09-13T20:02:33.360230+00:00",
+  "metadata": {
+    "has_code": true
+  },
+  "nodes_executed": [
+    {
+      "node": "coding_mentor_graph",
+      "duration_ms": 53.99,
+      "status": "SUCCESS",
+      "details": "Completed AST check, sandbox run & feedback",
+      "timestamp": "2026-09-13T20:02:33.414233+00:00"
+    }
+  ],
+  "tools_called": [
+    {
+      "tool": "ast_sandbox",
+      "duration_ms": 49.34,
+      "status": "SUCCESS",
+      "input_summary": {
+        "safe": true
+      },
+      "output_summary": "24\n",
+      "timestamp": "2026-09-13T20:02:33.414240+00:00"
+    }
+  ],
+  "decisions": [],
+  "errors": [],
+  "final_result": {
+    "executionSuccess": true,
+    "isSafe": true
+  },
+  "status": "SUCCESS",
+  "finished_at": "2026-09-13T20:02:33.414244+00:00",
+  "total_duration_ms": 54.01
+}

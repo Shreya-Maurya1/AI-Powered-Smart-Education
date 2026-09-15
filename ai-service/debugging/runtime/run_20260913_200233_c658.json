@@ -1,0 +1,143 @@
+{
+  "run_id": "run_20260913_200233_c658",
+  "agent": "learning_adaptation_agent",
+  "objective": "Improve student mastery of 'SQL JOIN' through continuous adaptation.",
+  "student_id": "cmtt5drap00021dekmkdu4xt4",
+  "topic": "SQL JOIN",
+  "started_at": "2026-09-13T20:02:33.305842+00:00",
+  "metadata": {
+    "target_mastery": 0.75,
+    "max_iterations": 2
+  },
+  "nodes_executed": [
+    {
+      "node": "learning_adaptation_graph",
+      "duration_ms": 33.11,
+      "status": "SUCCESS",
+      "details": "Completed 2 iterations",
+      "timestamp": "2026-09-13T20:02:33.338959+00:00"
+    }
+  ],
+  "tools_called": [
+    {
+      "tool": "get_learning_history",
+      "duration_ms": 12.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "branch": 3
+      },
+      "output_summary": null,
+      "timestamp": "2026-09-13T20:02:33.338979+00:00"
+    },
+    {
+      "tool": "get_student_mastery",
+      "duration_ms": 12.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "branch": 1
+      },
+      "output_summary": null,
+      "timestamp": "2026-09-13T20:02:33.338982+00:00"
+    },
+    {
+      "tool": "retrieve_memory",
+      "duration_ms": 12.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "branch": 2
+      },
+      "output_summary": null,
+      "timestamp": "2026-09-13T20:02:33.338984+00:00"
+    },
+    {
+      "tool": "generate_practice_question",
+      "duration_ms": 12.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "branch": null
+      },
+      "output_summary": null,
+      "timestamp": "2026-09-13T20:02:33.338986+00:00"
+    },
+    {
+      "tool": "update_student_mastery",
+      "duration_ms": 12.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "branch": null
+      },
+      "output_summary": null,
+      "timestamp": "2026-09-13T20:02:33.338988+00:00"
+    },
+    {
+      "tool": "save_memory",
+      "duration_ms": 12.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "branch": null
+      },
+      "output_summary": null,
+      "timestamp": "2026-09-13T20:02:33.338989+00:00"
+    },
+    {
+      "tool": "retrieve_learning_material",
+      "duration_ms": 12.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "branch": null
+      },
+      "output_summary": null,
+      "timestamp": "2026-09-13T20:02:33.338991+00:00"
+    },
+    {
+      "tool": "update_student_mastery",
+      "duration_ms": 12.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "branch": null
+      },
+      "output_summary": null,
+      "timestamp": "2026-09-13T20:02:33.338992+00:00"
+    },
+    {
+      "tool": "save_memory",
+      "duration_ms": 12.0,
+      "status": "SUCCESS",
+      "input_summary": {
+        "student_id": "cmtt5drap00021dekmkdu4xt4",
+        "branch": null
+      },
+      "output_summary": null,
+      "timestamp": "2026-09-13T20:02:33.338994+00:00"
+    }
+  ],
+  "decisions": [
+    {
+      "action": "REVISE",
+      "difficulty": "EASY",
+      "reason": "Mastery (45%) is below 50%. Foundational conceptual review and guided walkthrough recommended.",
+      "details": {
+        "current_mastery": 0.53,
+        "target": 0.75
+      },
+      "timestamp": "2026-09-13T20:02:33.338996+00:00"
+    }
+  ],
+  "errors": [],
+  "final_result": {
+    "action": "REVISE",
+    "mastery": 0.53,
+    "output": "[Learning Adaptation Agent: Evaluated] Answer evaluated as Correct. Mastery adjusted by +0.08 to 53%. Next step: REVISE (EASY). Mastery (45%) is below 50%. Foundational conceptual review and guided walkthrough recommended."
+  },
+  "status": "SUCCESS",
+  "finished_at": "2026-09-13T20:02:33.339001+00:00",
+  "total_duration_ms": 33.16
+}

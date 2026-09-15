@@ -101,3 +101,23 @@ export const getTopicDependencies = async (req: Request, res: Response, next: Ne
     next(error);
   }
 };
+
+export const updateStudentMastery = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let studentId = req.params.id;
+    if (!studentId || studentId === 'me') {
+      if (req.user?.role === 'STUDENT') {
+        const student = await prisma.student.findUnique({ where: { userId: req.user.id } });
+        if (student) studentId = student.id;
+      }
+    }
+    const { topic, masteryScore } = req.body;
+    if (!topic || masteryScore === undefined) {
+      return sendError(res, 'topic and masteryScore are required', 400);
+    }
+    const result = await masteryService.updateStudentTopicMastery(studentId, topic, parseFloat(masteryScore));
+    return sendSuccess(res, result, 'Mastery updated successfully');
+  } catch (error) {
+    next(error);
+  }
+};
