@@ -34,7 +34,7 @@ export default function LoginPage() {
           <BookOpen className="w-6 h-6" />
         </div>
         <h2 className="text-3xl font-bold text-gray-900">AdaptiveMind</h2>
-        <p className="mt-2 text-sm text-gray-600">Smart Education Platform (SIH Problem 19)</p>
+        <p className="mt-2 text-sm text-gray-600">Adaptive Learning Platform</p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -102,7 +102,7 @@ export default function LoginPage() {
           {/* Quick Demo Logins Helper */}
           <div className="mt-6 pt-5 border-t border-gray-100">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 text-center">
-              Quick Logins (Click to fill)
+              Sample Accounts (Click to fill)
             </p>
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -112,7 +112,7 @@ export default function LoginPage() {
               >
                 <UserCheck className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
                 <div className="truncate">
-                  <span className="font-medium text-gray-800 block truncate">Shreya (Student)</span>
+                  <span className="font-medium text-gray-800 block truncate">Student Account</span>
                   <span className="text-gray-400 text-[10px]">Student@123</span>
                 </div>
               </button>
@@ -124,7 +124,7 @@ export default function LoginPage() {
               >
                 <KeyRound className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                 <div className="truncate">
-                  <span className="font-medium text-gray-800 block truncate">Teacher Demo</span>
+                  <span className="font-medium text-gray-800 block truncate">Faculty (Teacher)</span>
                   <span className="text-gray-400 text-[10px]">Teacher@123</span>
                 </div>
               </button>

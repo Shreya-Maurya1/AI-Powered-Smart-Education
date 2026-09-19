@@ -17,7 +17,7 @@ export function Sidebar() {
   const studentLinks = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Adaptive Learning', href: '/learning', icon: Sparkles },
-    { name: 'AI Socratic Tutor', href: '/tutor', icon: MessageSquare },
+    { name: 'Socratic Tutor', href: '/tutor', icon: MessageSquare },
     { name: 'Coding Mentor', href: '/coding', icon: Code },
     { name: 'Browse Courses', href: '/courses', icon: BookOpen },
     { name: 'My Profile', href: '/profile', icon: User },

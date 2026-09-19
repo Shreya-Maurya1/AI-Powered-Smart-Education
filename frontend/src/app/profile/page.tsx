@@ -51,7 +51,7 @@ export default function ProfilePage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Student Profile & Topic Mastery</h1>
           <p className="text-sm text-gray-500 mt-1">
-            Manage your account settings and inspect your deterministic mastery scores.
+            Manage your account settings and review your topic proficiency.
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export default function ProfilePage() {
         <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
           <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
             <Brain className="w-5 h-5 text-indigo-600" />
-            <h3 className="font-bold text-lg text-gray-900">Topic Mastery Scores (Phase 2 Data Model)</h3>
+            <h3 className="font-bold text-lg text-gray-900">Topic Mastery & Performance</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">

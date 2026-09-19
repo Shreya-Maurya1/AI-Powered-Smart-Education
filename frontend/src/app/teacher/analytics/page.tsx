@@ -43,7 +43,7 @@ export default function TeacherAnalyticsPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Class Performance & Weakness Analytics</h1>
           <p className="text-sm text-gray-500 mt-1">
-            Real computed class mastery scores, assessment attempt pass rates, and identified weak topic clusters.
+            Aggregate class mastery scores, assessment attempt pass rates, and identified weak topic clusters.
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export default function TeacherAnalyticsPage() {
                   <Users className="w-4 h-4 text-purple-600" />
                 </div>
                 <p className="text-3xl font-bold text-gray-900">{data?.totalStudents ?? 4}</p>
-                <p className="text-xs text-purple-600 font-semibold">Active profiles in database</p>
+                <p className="text-xs text-purple-600 font-semibold">Active student profiles</p>
               </div>
             </div>
 
@@ -111,7 +111,7 @@ export default function TeacherAnalyticsPage() {
               </div>
             </div>
 
-            {/* Phase 6: Student Mastery-Over-Time Progression Chart */}
+            {/* Student Mastery-Over-Time Progression Chart */}
             <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-5">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
                 <div>
@@ -120,7 +120,7 @@ export default function TeacherAnalyticsPage() {
                     Student Mastery-Over-Time Progression
                   </h2>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Trajectory of student adaptation loops: Initial Baseline → Targeted Practice → Socratic Guidance → Mastery Goal
+                    Visual progression tracking student performance from baseline through practice to topic mastery
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -233,7 +233,7 @@ export default function TeacherAnalyticsPage() {
               </div>
             </div>
 
-            {/* Phase 6: Sequential vs Parallel Execution Benchmark Card */}
+            {/* Sequential vs Parallel Execution Benchmark Card */}
             <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
                 <div className="flex items-center gap-2">
@@ -242,10 +242,10 @@ export default function TeacherAnalyticsPage() {
                   </div>
                   <div>
                     <h2 className="font-bold text-lg text-gray-900">
-                      Sequential vs. Parallel Agent Execution Benchmark
+                      System Performance Benchmark
                     </h2>
                     <p className="text-xs text-gray-500">
-                      Comparing context loading latency in linear blocking mode vs. ThreadPool concurrent fan-out
+                      Comparing single-threaded vs concurrent context loading performance
                     </p>
                   </div>
                 </div>
@@ -280,7 +280,7 @@ export default function TeacherAnalyticsPage() {
                     <span className="text-xs font-bold text-indigo-700 uppercase tracking-wider flex items-center gap-1">
                       <span>Parallel Fan-Out</span>
                       <span className="bg-indigo-600 text-white text-[9px] px-1.5 py-0.5 rounded-full font-extrabold">
-                        Phase 4 & 6
+                        Optimized
                       </span>
                     </span>
                     <span className="text-xs font-semibold text-indigo-600">Concurrent Workers</span>
@@ -299,7 +299,7 @@ export default function TeacherAnalyticsPage() {
 
               <div className="bg-emerald-50/80 border border-emerald-200 p-3 rounded-lg flex items-center justify-between text-xs text-emerald-800">
                 <span className="font-semibold">
-                  🏆 Production Optimization: Parallel fan-out saves 63.2ms per agent cycle with zero data loss.
+                  Concurrent processing yields a 63.2ms latency improvement per request.
                 </span>
                 <span className="font-mono font-bold text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded">
                   trials=3

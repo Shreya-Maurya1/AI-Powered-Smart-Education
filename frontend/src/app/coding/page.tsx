@@ -164,11 +164,11 @@ export default function CodingPage() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold mb-2">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              Phase 5 Safe Python Sandbox & Coding Mentor
+              Interactive Code Lab
             </div>
             <h1 className="text-2xl font-bold text-gray-900">Python Coding Studio</h1>
             <p className="text-sm text-gray-500 mt-1">
-              Test algorithms in a sandboxed runtime with instant line-by-line AI mentor feedback.
+              Write and run Python solutions with real-time feedback and execution results.
             </p>
           </div>
 
@@ -229,7 +229,7 @@ export default function CodingPage() {
               <div className="flex items-center gap-2 text-xs font-mono text-gray-300">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
                 <span>solution.py</span>
-                <span className="text-gray-500 text-[11px]">(Python 3.14 Sandbox)</span>
+                <span className="text-gray-500 text-[11px]">(Python 3 Runtime)</span>
               </div>
               <span className="text-[11px] text-gray-500 font-mono">UTF-8</span>
             </div>
@@ -259,7 +259,7 @@ export default function CodingPage() {
             {/* Run Button Bar */}
             <div className="p-3 bg-gray-900 border-t border-gray-800 flex items-center justify-between">
               <div className="text-[11px] text-gray-400 font-mono">
-                Tab inserts 4 spaces • Sandboxed subprocess
+                Tab inserts 4 spaces • Python 3 Runtime
               </div>
               <button
                 onClick={handleRunCode}
@@ -267,7 +267,7 @@ export default function CodingPage() {
                 className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-semibold rounded-lg text-xs flex items-center gap-2 shadow-sm transition-colors"
               >
                 {running ? <Spinner size="sm" className="border-white" /> : <Play className="w-3.5 h-3.5 fill-current" />}
-                Run in Sandbox
+                Run Code
               </button>
             </div>
           </div>
@@ -317,7 +317,7 @@ export default function CodingPage() {
                   </>
                 ) : (
                   <div className="text-gray-500 italic">
-                    Click "Run in Sandbox" to execute Python code safely and view console output here.
+                    Click "Run Code" to execute Python code and view console output here.
                   </div>
                 )}
               </div>

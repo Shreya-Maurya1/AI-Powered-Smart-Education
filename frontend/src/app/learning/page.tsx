@@ -115,8 +115,8 @@ function LearningContent() {
         return 'bg-blue-100 text-blue-800 border-blue-300';
       case 'ASSESS':
         return 'bg-purple-100 text-purple-800 border-purple-300';
-      case 'CODE':
-        return 'bg-sky-100 text-sky-800 border-sky-300';
+      case 'ADVANCE':
+        return 'bg-blue-100 text-blue-800 border-blue-300';
       default:
         return 'bg-gray-100 text-gray-800 border-gray-300';
     }
@@ -125,7 +125,7 @@ function LearningContent() {
   return (
     <div className="max-w-5xl mx-auto space-y-6 pb-12">
       {/* Navigation & Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
         <div>
           <button
             onClick={() => router.push('/dashboard')}
@@ -138,7 +138,7 @@ function LearningContent() {
             Adaptive Learning Session
           </h1>
           <p className="text-sm text-gray-500">
-            Powered by the multi-node LangGraph Learning Adaptation Agent (Phase 4 Centerpiece)
+            Personalized study plan tailored to your strengths and target topics
           </p>
         </div>
 
@@ -170,10 +170,10 @@ function LearningContent() {
         <div className="bg-white rounded-xl border border-gray-200 p-12 text-center shadow-sm">
           <Spinner size="lg" className="mx-auto" />
           <p className="mt-4 text-sm font-medium text-gray-600">
-            Invoking LangGraph Learning Adaptation Graph...
+            Analyzing learning progress...
           </p>
           <p className="text-xs text-gray-400 mt-1">
-            Running parallel context fan-out: mastery, history, and memory nodes.
+            Retrieving mastery level, recent practice history, and study notes.
           </p>
         </div>
       ) : error ? (
@@ -199,7 +199,7 @@ function LearningContent() {
                 <div className="flex items-center gap-2">
                   <Zap className="w-5 h-5 text-amber-400" />
                   <span className="text-xs font-bold uppercase tracking-wider text-indigo-200">
-                    Active Agent Decision
+                    Recommended Activity
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -284,19 +284,19 @@ function LearningContent() {
                 onClick={() => setShowLogs(!showLogs)}
                 className="text-xs text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1"
               >
-                {showLogs ? 'Hide Graph Logs' : 'View Graph Logs'}
+                {showLogs ? 'Hide Activity Details' : 'View Activity Details'}
               </button>
             </div>
 
             {showLogs && (
               <div className="bg-gray-900 text-gray-200 p-4 text-xs font-mono border-b border-gray-200 max-h-48 overflow-y-auto space-y-1">
-                <div className="text-gray-400 mb-2 font-bold">// LangGraph State Trace & Parallel Fan-In:</div>
+                <div className="text-gray-400 mb-2 font-bold">// Session Activity & Context:</div>
                 {agentData.metadata?.sessionLogs?.map((log: string, i: number) => (
                   <div key={i} className="text-emerald-400">
                     {log}
                   </div>
                 ))}
-                <div className="text-gray-400 mt-2 font-bold">// Tool Invocations:</div>
+                <div className="text-gray-400 mt-2 font-bold">// Step Execution:</div>
                 {agentData.tool_calls_made?.map((t: any, idx: number) => (
                   <div key={idx} className="text-sky-300">
                     &gt; {JSON.stringify(t)}
@@ -384,7 +384,7 @@ function LearningContent() {
                         disabled={!selectedAnswer || submitting}
                         className="py-2.5 px-6 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-semibold rounded-lg text-sm transition-colors flex items-center gap-2"
                       >
-                        {submitting ? <Spinner size="sm" className="border-white" /> : 'Submit to AI Agent'}
+                        {submitting ? <Spinner size="sm" className="border-white" /> : 'Submit Answer'}
                         <ArrowRight className="w-4 h-4" />
                       </button>
                     ) : (
@@ -392,7 +392,7 @@ function LearningContent() {
                         onClick={handleNextAdaptiveStep}
                         className="py-2.5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-sm transition-colors flex items-center gap-2 shadow-sm"
                       >
-                        Continue Adaptive Loop (Re-Plan) <TrendingUp className="w-4 h-4" />
+                        Continue Practice <TrendingUp className="w-4 h-4" />
                       </button>
                     )}
                   </div>
@@ -452,8 +452,7 @@ function LearningContent() {
                   <h3 className="text-xl font-bold text-emerald-900">Mastery Milestone Achieved!</h3>
                   <p className="text-sm text-emerald-800 max-w-md mx-auto">
                     Your demonstrated mastery of <strong>{selectedTopic}</strong> is at{' '}
-                    <strong>{masteryPercent}%</strong> (above the 85% benchmark). The Learning Adaptation Agent has
-                    unlocked the next progression:
+                    <strong>{masteryPercent}%</strong> (above the 85% benchmark). You have unlocked the next topic:
                   </p>
                   <div className="inline-block bg-white px-5 py-2.5 rounded-lg border border-emerald-300 font-bold text-emerald-800 text-sm shadow-sm">
                     Next Unlocked: {actionResult?.nextTopic || 'Advanced Concepts'}
@@ -466,7 +465,7 @@ function LearningContent() {
                       }}
                       className="py-2.5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-sm flex items-center gap-2"
                     >
-                      Begin Next Curriculum Module <ArrowRight className="w-4 h-4" />
+                      Begin Next Topic <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
                 </div>

@@ -104,7 +104,7 @@ export default function CourseDetailPage() {
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-gray-900">Course Modules & Lessons</h2>
+          <h2 className="text-xl font-bold text-gray-900">Course Syllabus & Lessons</h2>
 
           {course.modules?.length === 0 ? (
             <p className="text-gray-500 text-sm">No modules available yet.</p>
@@ -112,7 +112,7 @@ export default function CourseDetailPage() {
             course.modules?.map((module, mIdx) => (
               <div key={module.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <div className="p-4 bg-gray-50 border-b border-gray-200 font-semibold text-gray-800 flex justify-between items-center">
-                  <span>Module {mIdx + 1}: {module.title}</span>
+                  <span>{module.title}</span>
                   <span className="text-xs text-gray-500 font-normal">{module.lessons?.length || 0} Lessons</span>
                 </div>
                 <div className="divide-y divide-gray-100">

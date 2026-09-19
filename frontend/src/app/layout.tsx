@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'AdaptiveMind — Smart Adaptive Learning Platform',
-  description: 'AI-Powered Adaptive Smart Education Platform (SIH Problem Statement 19)',
+  description: 'Personalized adaptive education platform for students and educators',
 };
 
 export default function RootLayout({
