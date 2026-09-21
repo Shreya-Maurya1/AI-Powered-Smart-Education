@@ -317,7 +317,7 @@ export default function CodingPage() {
                   </>
                 ) : (
                   <div className="text-gray-500 italic">
-                    Click "Run Code" to execute Python code and view console output here.
+                    Click &quot;Run Code&quot; to execute Python code and view console output here.
                   </div>
                 )}
               </div>

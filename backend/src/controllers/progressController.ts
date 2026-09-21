@@ -23,7 +23,9 @@ export const getStudentProgress = async (req: Request, res: Response, next: Next
       studentId = student.id;
     } else if (req.user?.role === 'STUDENT') {
       const student = await prisma.student.findUnique({ where: { userId: req.user.id } });
-      if (student?.id !== studentId) return sendError(res, 'Forbidden', 403);
+      if (!student) return sendError(res, 'Student profile not found', 404);
+      if (student.id !== studentId && student.userId !== studentId) return sendError(res, 'Forbidden', 403);
+      studentId = student.id;
     }
 
     const progress = await progressService.getStudentProgress(studentId);
@@ -35,10 +37,17 @@ export const getStudentProgress = async (req: Request, res: Response, next: Next
 
 export const getCourseProgress = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id: studentId, courseId } = req.params;
-    if (req.user?.role === 'STUDENT') {
+    let { id: studentId, courseId } = req.params;
+    if (studentId === 'me' || !studentId) {
+      if (req.user?.role !== 'STUDENT') return sendError(res, 'Student profile required', 400);
       const student = await prisma.student.findUnique({ where: { userId: req.user.id } });
-      if (student?.id !== studentId) return sendError(res, 'Forbidden', 403);
+      if (!student) return sendError(res, 'Student profile not found', 404);
+      studentId = student.id;
+    } else if (req.user?.role === 'STUDENT') {
+      const student = await prisma.student.findUnique({ where: { userId: req.user.id } });
+      if (!student) return sendError(res, 'Student profile not found', 404);
+      if (student.id !== studentId && student.userId !== studentId) return sendError(res, 'Forbidden', 403);
+      studentId = student.id;
     }
 
     const progress = await progressService.getCourseProgress(studentId, courseId);
@@ -72,6 +81,11 @@ export const getStudentMastery = async (req: Request, res: Response, next: NextF
       if (req.user?.role !== 'STUDENT') return sendError(res, 'Student profile required', 400);
       const student = await prisma.student.findUnique({ where: { userId: req.user.id } });
       if (!student) return sendError(res, 'Student profile not found', 404);
+      studentId = student.id;
+    } else if (req.user?.role === 'STUDENT') {
+      const student = await prisma.student.findUnique({ where: { userId: req.user.id } });
+      if (!student) return sendError(res, 'Student profile not found', 404);
+      if (student.id !== studentId && student.userId !== studentId) return sendError(res, 'Forbidden', 403);
       studentId = student.id;
     }
 

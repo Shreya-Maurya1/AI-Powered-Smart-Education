@@ -42,6 +42,7 @@ export const getStudentProgress = async (studentId: string) => {
     masterySummary,
     enrollments: student.enrollments,
     recentEvents: student.events,
+    attempts: student.attempts,
   };
 };
 

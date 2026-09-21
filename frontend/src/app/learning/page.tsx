@@ -290,13 +290,13 @@ function LearningContent() {
 
             {showLogs && (
               <div className="bg-gray-900 text-gray-200 p-4 text-xs font-mono border-b border-gray-200 max-h-48 overflow-y-auto space-y-1">
-                <div className="text-gray-400 mb-2 font-bold">// Session Activity & Context:</div>
+                <div className="text-gray-400 mb-2 font-bold">{'// Session Activity & Context:'}</div>
                 {agentData.metadata?.sessionLogs?.map((log: string, i: number) => (
                   <div key={i} className="text-emerald-400">
                     {log}
                   </div>
                 ))}
-                <div className="text-gray-400 mt-2 font-bold">// Step Execution:</div>
+                <div className="text-gray-400 mt-2 font-bold">{'// Step Execution:'}</div>
                 {agentData.tool_calls_made?.map((t: any, idx: number) => (
                   <div key={idx} className="text-sky-300">
                     &gt; {JSON.stringify(t)}

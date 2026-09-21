@@ -29,7 +29,7 @@ export default function StudentDashboard() {
   const { progress, loading: progressLoading } = useProgress(user?.id);
 
   const masterySummary = progress?.masterySummary;
-  const overallMastery = masterySummary?.overallMasteryPercent ?? 71;
+  const overallMastery = masterySummary?.overallMasteryPercent ?? 0;
   const recommended = masterySummary?.recommendedRevisionTopic;
   const strongTopics = masterySummary?.strongTopics ?? [];
   const weakTopics = masterySummary?.weakTopics ?? [];
@@ -114,14 +114,14 @@ export default function StudentDashboard() {
           />
           <StatsCard
             title="XP Points"
-            value={progressLoading ? '...' : `${progress?.xpPoints ?? 250} XP`}
+            value={progressLoading ? '...' : `${progress?.xpPoints ?? 0} XP`}
             icon={Award}
             color="purple"
             description="Earned from quizzes & activity"
           />
           <StatsCard
             title="Streak Days"
-            value={progressLoading ? '...' : `${progress?.streakDays ?? 5} Days`}
+            value={progressLoading ? '...' : `${progress?.streakDays ?? 1} Days`}
             icon={Flame}
             color="amber"
             description="Active learning streak"

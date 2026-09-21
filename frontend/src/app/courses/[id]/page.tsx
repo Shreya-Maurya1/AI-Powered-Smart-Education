@@ -18,6 +18,7 @@ export default function CourseDetailPage() {
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [enrollError, setEnrollError] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -37,11 +38,12 @@ export default function CourseDetailPage() {
 
   const handleEnroll = async () => {
     setEnrolling(true);
+    setEnrollError(null);
     try {
       await coursesApi.enroll(id);
       setIsEnrolled(true);
     } catch (err: any) {
-      alert(err.message || 'Enrollment failed');
+      setEnrollError(err?.response?.data?.message || err?.message || 'Enrollment failed. Please try again.');
     } finally {
       setEnrolling(false);
     }
@@ -69,6 +71,12 @@ export default function CourseDetailPage() {
         <button onClick={() => router.back()} className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900">
           <ArrowLeft className="w-4 h-4" /> Back to courses
         </button>
+
+        {enrollError && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+            {enrollError}
+          </div>
+        )}
 
         <div className="bg-white rounded-xl border border-gray-200 p-6 md:p-8 space-y-6">
           <div className="flex flex-col md:flex-row justify-between items-start gap-4">
@@ -116,31 +124,67 @@ export default function CourseDetailPage() {
                   <span className="text-xs text-gray-500 font-normal">{module.lessons?.length || 0} Lessons</span>
                 </div>
                 <div className="divide-y divide-gray-100">
-                  {module.lessons?.map((lesson) => (
-                    <div key={lesson.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <PlayCircle className="w-5 h-5 text-indigo-600" />
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">{lesson.title}</p>
-                          <div className="flex items-center gap-3 text-xs text-gray-400 mt-0.5">
-                            <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {lesson.durationMinutes} mins</span>
-                            <span>{lesson.contentType}</span>
+                  {module.lessons?.map((lesson) => {
+                    const lessonTopic =
+                      lesson.topics?.[0]?.title ||
+                      (lesson.title.toLowerCase().includes('variable')
+                        ? 'Python Variables'
+                        : lesson.title.toLowerCase().includes('function')
+                        ? 'Python Functions'
+                        : lesson.title.toLowerCase().includes('join')
+                        ? 'SQL JOIN'
+                        : 'Python Recursion');
+
+                    return (
+                      <div key={lesson.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <PlayCircle className="w-5 h-5 text-indigo-600" />
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">{lesson.title}</p>
+                            <div className="flex items-center gap-3 text-xs text-gray-400 mt-0.5">
+                              <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {lesson.durationMinutes} mins</span>
+                              <span>{lesson.contentType}</span>
+                            </div>
                           </div>
                         </div>
+                        <Link
+                          href={`/learning?topic=${encodeURIComponent(lessonTopic)}&lessonId=${lesson.id}`}
+                          className="py-1.5 px-3 bg-indigo-50 text-indigo-700 font-semibold rounded text-xs hover:bg-indigo-100 transition-colors"
+                        >
+                          Start Lesson
+                        </Link>
                       </div>
-                      <Link
-                        href={`/learning?lessonId=${lesson.id}`}
-                        className="py-1.5 px-3 bg-indigo-50 text-indigo-700 font-semibold rounded text-xs hover:bg-indigo-100 transition-colors"
-                      >
-                        Start Lesson
-                      </Link>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             ))
           )}
         </div>
+
+        {course.assessments && course.assessments.length > 0 && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-gray-900">Course Assessments & Quizzes</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {course.assessments.map((assessment) => (
+                <div key={assessment.id} className="bg-white rounded-xl border border-gray-200 p-5 flex items-center justify-between shadow-sm">
+                  <div className="space-y-1">
+                    <h3 className="font-semibold text-gray-900 text-sm">{assessment.title}</h3>
+                    <p className="text-xs text-gray-500">
+                      Passing: {assessment.passingMarks} / {assessment.totalMarks} pts • Time Limit: {assessment.timeLimitMinutes} mins
+                    </p>
+                  </div>
+                  <Link
+                    href={`/assessment?assessmentId=${assessment.id}`}
+                    className="py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-xs transition-colors shadow-sm"
+                  >
+                    Take Assessment
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </ProtectedRoute>
   );

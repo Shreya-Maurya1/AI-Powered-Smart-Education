@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-import { LayoutDashboard, BookOpen, User, GraduationCap, BarChart2, Sparkles, MessageSquare, Code } from 'lucide-react';
+import { LayoutDashboard, BookOpen, User, GraduationCap, BarChart2, Sparkles, MessageSquare, Code, Award } from 'lucide-react';
 
 export function Sidebar() {
   const { user } = useAuth();
@@ -19,6 +19,7 @@ export function Sidebar() {
     { name: 'Adaptive Learning', href: '/learning', icon: Sparkles },
     { name: 'Socratic Tutor', href: '/tutor', icon: MessageSquare },
     { name: 'Coding Mentor', href: '/coding', icon: Code },
+    { name: 'Assessments', href: '/assessment', icon: Award },
     { name: 'Browse Courses', href: '/courses', icon: BookOpen },
     { name: 'My Profile', href: '/profile', icon: User },
   ];

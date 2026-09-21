@@ -180,6 +180,7 @@ export interface Progress {
   masterySummary: MasterySummary;
   enrollments: StudentCourse[];
   recentEvents: LearningEventItem[];
+  attempts?: Attempt[];
 }
 
 export interface TeacherStudentSummary {
