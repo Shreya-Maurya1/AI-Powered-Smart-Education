@@ -53,7 +53,7 @@ export default function TeacherDashboard() {
     <ProtectedRoute allowedRole="TEACHER">
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Teacher Dashboard 👨‍🏫</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Teacher Dashboard</h1>
           <p className="text-sm text-gray-500 mt-1">
             Welcome back, {user?.name}. Real-time student performance, topic weakness analytics, and activity stream.
           </p>
@@ -76,7 +76,7 @@ export default function TeacherDashboard() {
                 value={`${data?.avgClassMastery ?? 74}%`}
                 icon={BarChart2}
                 color="green"
-                description="Deterministic mastery avg"
+                description="Overall class average"
               />
               <StatsCard
                 title="Quiz Pass Rate"

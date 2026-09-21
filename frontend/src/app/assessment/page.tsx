@@ -7,7 +7,7 @@ import { assessmentsApi } from '@/lib/api';
 import { Assessment, Attempt } from '@/types';
 import { QuizQuestion } from '@/components/shared/QuizQuestion';
 import { Spinner } from '@/components/ui/Spinner';
-import { Clock, CheckCircle, XCircle, ArrowLeft, Award } from 'lucide-react';
+import { Clock, CheckCircle, XCircle } from 'lucide-react';
 
 function AssessmentContent() {
   const searchParams = useSearchParams();
@@ -77,25 +77,6 @@ function AssessmentContent() {
     load();
   }, [assessmentId]);
 
-  useEffect(() => {
-    if (result || loading) return;
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          handleSubmit();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [result, loading]);
-
-  const handleAnswer = (questionId: string, answer: string) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: answer }));
-  };
-
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
@@ -131,6 +112,25 @@ function AssessmentContent() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  useEffect(() => {
+    if (result || loading) return;
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          handleSubmit();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [result, loading, handleSubmit]);
+
+  const handleAnswer = (questionId: string, answer: string) => {
+    setAnswers((prev) => ({ ...prev, [questionId]: answer }));
   };
 
   if (loading) return <div className="py-20 flex justify-center"><Spinner size="lg" /></div>;

@@ -29,7 +29,7 @@ export default function StudentDashboard() {
   const { progress, loading: progressLoading } = useProgress(user?.id);
 
   const masterySummary = progress?.masterySummary;
-  const overallMastery = masterySummary?.overallMasteryPercent ?? 71;
+  const overallMastery = masterySummary?.overallMasteryPercent ?? 0;
   const recommended = masterySummary?.recommendedRevisionTopic;
   const strongTopics = masterySummary?.strongTopics ?? [];
   const weakTopics = masterySummary?.weakTopics ?? [];
@@ -45,7 +45,7 @@ export default function StudentDashboard() {
               Welcome back, {user?.name}! 👋
             </h1>
             <p className="text-sm text-gray-500 mt-1">
-              AdaptiveMind Multi-Agent Engine • Real-time Mastery & Tracing Active
+              Personalized Learning Dashboard • Real-time Progress Tracking
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -54,7 +54,7 @@ export default function StudentDashboard() {
               className="flex items-center gap-1.5 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-3.5 py-2 rounded-xl text-indigo-700 font-semibold text-xs transition-colors"
             >
               <Brain className="w-4 h-4 text-indigo-600" />
-              <span>Ask AI Tutor</span>
+              <span>Ask Tutor</span>
             </Link>
             <Link
               href="/coding"
@@ -73,7 +73,7 @@ export default function StudentDashboard() {
               <span className="text-[10px] uppercase font-extrabold tracking-wider bg-indigo-500/30 text-indigo-200 px-2.5 py-0.5 rounded-full border border-indigo-400/30">
                 Active Learning Goal
               </span>
-              <span className="text-xs text-indigo-300 font-medium">Phase 6 Adaptive Journey</span>
+              <span className="text-xs text-indigo-300 font-medium">Recommended Milestone</span>
             </div>
             <h2 className="text-lg font-bold tracking-tight">Master SQL JOINs & Advanced Relational Queries</h2>
             <p className="text-xs text-indigo-200">
@@ -103,7 +103,7 @@ export default function StudentDashboard() {
             value={progressLoading ? '...' : `${overallMastery}%`}
             icon={Brain}
             color="indigo"
-            description="Computed deterministic mastery"
+            description="Based on quiz & practice results"
           />
           <StatsCard
             title="Completed Lessons"
@@ -114,14 +114,14 @@ export default function StudentDashboard() {
           />
           <StatsCard
             title="XP Points"
-            value={progressLoading ? '...' : `${progress?.xpPoints ?? 250} XP`}
+            value={progressLoading ? '...' : `${progress?.xpPoints ?? 0} XP`}
             icon={Award}
             color="purple"
             description="Earned from quizzes & activity"
           />
           <StatsCard
             title="Streak Days"
-            value={progressLoading ? '...' : `${progress?.streakDays ?? 5} Days`}
+            value={progressLoading ? '...' : `${progress?.streakDays ?? 1} Days`}
             icon={Flame}
             color="amber"
             description="Active learning streak"
@@ -138,7 +138,7 @@ export default function StudentDashboard() {
                 <span>Recommended Topic Revision</span>
               </div>
               <span className="text-xs bg-amber-200 text-amber-900 font-semibold px-2.5 py-1 rounded-full">
-                Deterministic Rule
+                Suggested Focus
               </span>
             </div>
 
@@ -245,8 +245,8 @@ export default function StudentDashboard() {
 
             <div className="pt-3 border-t border-gray-100">
               <div className="flex justify-between text-xs text-gray-500">
-                <span>Formula: Prev + Adjust - Penalty</span>
-                <span className="font-semibold text-gray-700">Deterministic</span>
+                <span>Calculated from recent assessments & practice</span>
+                <span className="font-semibold text-gray-700">Live Metric</span>
               </div>
             </div>
           </div>

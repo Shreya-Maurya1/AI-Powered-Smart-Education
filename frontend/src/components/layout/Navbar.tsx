@@ -26,7 +26,6 @@ export function Navbar() {
                 <BookOpen className="w-5 h-5" />
               </div>
               <span className="font-bold text-xl text-gray-900">AdaptiveMind</span>
-              <span className="text-xs bg-indigo-100 text-indigo-700 font-semibold px-2 py-0.5 rounded">Phase 1</span>
             </Link>
           </div>
 

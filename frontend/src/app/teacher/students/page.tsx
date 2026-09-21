@@ -69,7 +69,7 @@ export default function TeacherStudentsPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Student Roster & Mastery</h1>
           <p className="text-sm text-gray-500 mt-1">
-            Real student data: overall mastery score, identified weak topics, learning style, and XP points.
+            Overview of enrolled students: topic mastery, identified areas for improvement, and learning styles.
           </p>
         </div>
 

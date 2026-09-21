@@ -238,8 +238,8 @@ model StudentMastery {
 
 model TopicDependency {
   id                String   @id @default(cuid())
-  topic             String   @map("topic_id")
-  prerequisiteTopic String   @map("prerequisite_topic_id")
+  topic             String   @map("topic")
+  prerequisiteTopic String   @map("prerequisite_topic")
   createdAt         DateTime @default(now()) @map("created_at")
 
   @@unique([topic, prerequisiteTopic])

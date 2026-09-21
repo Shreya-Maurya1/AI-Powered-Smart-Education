@@ -64,7 +64,7 @@ def tutor_endpoint(req: TutorRequest):
 @app.post("/ai/assessment", response_model=AIResponse)
 def assessment_endpoint(req: AssessmentRequest):
     try:
-        student_response = req.context.get("student_response") if req.context else None
+        student_response = req.student_response or (req.context.get("student_response") if req.context else None)
         return run_assessment_agent(
             student_id=req.student_id,
             course_id=req.course_id,

@@ -52,6 +52,14 @@ export const enrollStudent = async (studentId: string, courseId: string) => {
 export const getEnrolledCourses = async (studentId: string) => {
   return await prisma.studentCourse.findMany({
     where: { studentId },
-    include: { course: true }
+    include: {
+      course: {
+        include: {
+          teacher: {
+            include: { user: { select: { name: true } } }
+          }
+        }
+      }
+    }
   });
 };

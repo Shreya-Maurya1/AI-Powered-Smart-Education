@@ -54,10 +54,9 @@ export default function TutorPage() {
       id: 'welcome-01',
       sender: 'tutor',
       text: (
-        "👋 Welcome! I am your **AdaptiveMind Socratic AI Tutor**.\n\n" +
-        "My explanations are grounded in your actual course textbooks via **RAG** " +
-        "and tailored to your personal **learning style & memory traces**.\n\n" +
-        "Ask me anything about your current topic or pick a suggested concept below!"
+        "👋 Welcome! I'm your interactive tutor.\n\n" +
+        "I can help explain concepts, walk through problem-solving steps, and refer back to your course materials.\n\n" +
+        "Ask a question about your current topic or select a prompt below to get started!"
       ),
       topic: 'Python Recursion',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -106,7 +105,7 @@ export default function TutorPage() {
       const errorMsg: ChatMessage = {
         id: `err-${Date.now()}`,
         sender: 'tutor',
-        text: `⚠️ **Connection Error**: ${err?.response?.data?.message || err?.message || 'Failed to reach AI Tutor service.'}`,
+        text: `⚠️ **Connection Error**: ${err?.response?.data?.message || err?.message || 'Unable to reach tutor service. Please try again.'}`,
         topic: selectedTopic,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
@@ -124,11 +123,11 @@ export default function TutorPage() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold mb-2">
               <Sparkles className="w-3.5 h-3.5" />
-              Phase 5 Socratic AI Tutor (RAG + Memory)
+              Socratic Learning Assistant
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Personalized AI Tutor</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Socratic Tutor</h1>
             <p className="text-sm text-gray-500 mt-1">
-              Grounded in verified course curriculum with source citations and continuous student memory.
+              Ask questions, get step-by-step explanations, and review verified course concepts.
             </p>
           </div>
 
@@ -190,7 +189,7 @@ export default function TutorPage() {
                     <div className="mb-3 p-2.5 rounded-lg bg-purple-50 border border-purple-200 text-xs text-purple-900 flex items-start gap-2">
                       <Brain className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
                       <div>
-                        <span className="font-semibold block">🧠 Student Memory Recall Active</span>
+                        <span className="font-semibold block">Relevant Learning Context</span>
                         <ul className="mt-0.5 space-y-0.5 text-[11px] text-purple-700 list-disc list-inside">
                           {msg.activeMemories.map((m, i) => (
                             <li key={i}>{m}</li>
@@ -217,7 +216,7 @@ export default function TutorPage() {
                       >
                         <span className="flex items-center gap-1.5">
                           <BookOpen className="w-3.5 h-3.5 text-indigo-600" />
-                          Curriculum Citations & RAG Grounding ({Math.round((msg.groundingScore || 0.9) * 100)}% Match)
+                          Curriculum References ({Math.round((msg.groundingScore || 0.9) * 100)}% Match)
                         </span>
                         {expandedCitationId === msg.id ? (
                           <ChevronUp className="w-3.5 h-3.5" />
@@ -259,7 +258,7 @@ export default function TutorPage() {
                 <div className="bg-gray-50 border border-gray-200 px-4 py-3 rounded-2xl rounded-tl-none flex items-center gap-2">
                   <Spinner size="sm" className="border-indigo-600" />
                   <span className="text-xs font-medium text-gray-600">
-                    Retrieving RAG curriculum sources & synthesizing Socratic answer...
+                    Searching course material and formulating response...
                   </span>
                 </div>
               </div>
@@ -279,7 +278,7 @@ export default function TutorPage() {
                 type="text"
                 value={inputQuery}
                 onChange={(e) => setInputQuery(e.target.value)}
-                placeholder={`Ask the AI Tutor about ${selectedTopic}...`}
+                placeholder={`Ask a question about ${selectedTopic}...`}
                 disabled={loading}
                 className="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm bg-white"
               />

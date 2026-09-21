@@ -40,7 +40,7 @@ export default function RegisterPage() {
           <BookOpen className="w-6 h-6" />
         </div>
         <h2 className="text-3xl font-bold text-gray-900">Create your account</h2>
-        <p className="mt-2 text-sm text-gray-600">Join AdaptiveMind Smart Learning Platform</p>
+        <p className="mt-2 text-sm text-gray-600">Sign up to start learning</p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -88,7 +88,7 @@ export default function RegisterPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                placeholder="Arjun Mehta"
+                placeholder="Your Full Name"
               />
             </div>
 
@@ -100,7 +100,7 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                placeholder="arjun@example.com"
+                placeholder="name@example.com"
               />
             </div>
 

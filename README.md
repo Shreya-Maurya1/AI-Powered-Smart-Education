@@ -389,8 +389,8 @@ cd backend
 # Start development server
 npm run dev
 
-# API will start on http://localhost:5000
-# Health check: http://localhost:5000/health
+# API will start on http://localhost:5001
+# Health check: http://localhost:5001/health
 ```
 
 ---
